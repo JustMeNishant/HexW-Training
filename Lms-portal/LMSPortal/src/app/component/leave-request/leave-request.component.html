@@ -1,0 +1,20 @@
+<div class="empList">
+    <table style="width:100%">
+        <tr>
+          <th>Name</th>
+          <th>startDate</th>
+          <th>endDate</th>
+          <th>leaveType</th>
+          <th>leaveStatus</th>
+          <th>Action</th>
+        </tr>
+        <tr *ngFor="let e of employeeArr">
+          <td>{{e.name}}</td>
+          <td>{{e.startDate}}</td>
+          <td>{{e.endDate}}</td>
+          <td>{{e.leaveType}}</td>
+          <td>{{e.leaveStatus}}</td>
+          <td><button (click)="viewRequest(e.id)">View Request</button></td>
+        </tr>
+      </table>
+</div>

@@ -1,0 +1,15 @@
+.block{
+	border: 3px solid rgb(49, 49, 49);
+  display: inlibe-block;
+  align-items: center;
+	border: 3px solid white;
+	padding: 15px;
+	height: fit-content;
+	width: fit-content;
+	padding-bottom: 2%;
+	float: Center;
+	margin: 10px;
+	background: linear-gradient(to  left, #33ccff 0%, #66ff99 100%);
+	font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+	font-size: 2vw;
+}

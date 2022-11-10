@@ -1,0 +1,14 @@
+form{
+    border: solid 1px black;
+    margin: 20px;
+    padding: 10px;
+}
+.b1{
+    background-color: green;
+}
+.b2{
+    background-color: red;
+}
+.b3{
+    background-color: gray;
+}

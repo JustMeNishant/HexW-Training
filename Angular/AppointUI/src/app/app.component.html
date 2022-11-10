@@ -1,0 +1,44 @@
+<!--
+<form #employeeForm="ngForm" (submit)="onEmployeeSubmit(employeeForm)">
+  <label>Name: </label>
+  <input type="text" name="name" ngModel #name="ngModel"> <br /><br />
+  <label>City: </label>
+  <input type="text" name="city" ngModel #city="ngModel"> <br /><br />
+  <label>Salary: </label>
+  <input type="text" name="salary" ngModel #salary="ngModel"><br /><br />
+  <label>Employee Start Date: </label>
+  <input type="date" name="startDate" ngModel #startDate="ngModel"><br /><br />
+  <label>Employee Start TIme: </label>
+  <input type="time" name="startTime" ngModel #startTime="ngModel"><br /><br />
+  <input type="submit" value="Add Employee">
+</form>
+
+<hr>
+<div class="employee_box"
+      *ngFor="let e of empArr">
+{{e.id}} <br>
+{{e.name}} <br>
+{{e.city}} <br>
+{{e.salary}} <br>
+<button (click)="deleteEmployee(e.id)">Delete</button>
+</div>
+
+
+
+<div class="employee_box"
+      *ngFor="let s of studentArr">
+{{s.id}} <br>
+{{s.name}} <br>
+{{s.email}} <br>
+Address: {{s.address.hno}}, {{s.address.city}}, {{s.address.pincode}}  <br>
+</div>
+
+<app-patient></app-patient>
+-->
+
+<div>
+  <app-nav-bar></app-nav-bar>
+  <router-outlet></router-outlet>
+
+</div>
+

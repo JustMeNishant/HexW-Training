@@ -1,0 +1,112 @@
+Passing of Data between Controller and JSP 
+==========================================
+- IoC Framework of Spring 
+	:Dependency Injection(DI) 
+- AutoWiring 
+
+3 techniques
+============
+1. Model <interface>   
+2. HttpServletRequest <abstract class> 
+3. ModelAndView <class>
+
+Why JSP?
+--------
+HTML: HTML
+JSP: HTML + JAVA
+
+Note: JAVA codes must be written in tags. 
+
+JSP Tags
+========
+1. Scriptlet (<%  %>)
+2. import (<%@page import="" %>)
+3. Expression (<%= %>)
+4. Comment tag <%-- JSP comment --%>
+
+
+http://localhost:8282/SpringMVCProject/employee-details
+
+
+http://localhost:8282/employee-details
+
+==========================================
+50/60 => 100
+
+Spring Boot:
+Angular
+Spring MVC
+
+
+GET : fetch 
+POST: insert 
+PUT: update
+DELETE: delete 
+
+Product
+	: id
+	: name
+	: price
+
+ProductRepository
+ProductController
+	: insertProduct()
+	: getAllProduct()
+
+
+AWS Git
+-------
+(Spring MVC) Tuesday 
+(DB-SQL - PL/SQL) Wednesday 
+(Java Programming) Monday  
+
+VIVA
+
+LEVEL 1: 
+CRUD: Create |  Retrieve | Update | Delete 
+
+LEVEL 2: 
+Establishing relationships between entities and writing API's 
+
+student(id,name,email,address_id)
+ 1:1
+address(id,hno,pincode,city)
+
+course(id,name,credits,fee,department_id(MUL))
+ M:1
+department(id,name)
+
+student(id,name,email,address_id)
+ M:M [student_course(student_id,course_id,enroll_date)]
+course(id,name,credits,fee,department_id)
+
+
+
+student(id,name,email,address_id)
+address(id,hno,pincode,city)
+course(id,name,credits,fee,department_id)
+department(id,name)
+student_course(student_id,course_id,enroll_date)
+
+
+student 
+address  
+
+YES.. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

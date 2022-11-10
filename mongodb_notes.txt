@@ -1,0 +1,310 @@
+Document Based DB: Mongo DB
+===========================
+
+Creating the DB
+---------------
+use <db-name>
+use mavericks
+
+Insert the Document
+===================
+db.employee.insert({
+name: 'harry potter',
+salary: 80000,
+city: 'london',
+department: 'IT',
+title: 'Quidich captain'
+})
+
+db.employee.insertMany([{
+name: 'ronald weasley',
+salary: 75000, 
+city: 'surrey',
+department: 'ADMIN'
+},
+{
+name: 'hermione granger',
+salary: 90000,
+city: 'london',
+department: 'IT',
+norm: 'IS'
+},
+{
+name: 'draco malfoy',
+salary: 78000,
+city: 'london',
+department: 'SALES'
+}])
+
+db.employee.insert([{
+name: 'frodo baggins',
+salary: 88000, 
+city: 'shire',
+department: 'SALES'
+},
+{
+name: 'samwise gamajee',
+salary: 68000, 
+city: 'shire',
+department: 'ADMIN'
+}])
+
+
+display the document
+====================
+db.employee.find()
+db.employee.find().pretty()
+
+Remove/Delete the Record
+========================
+db.employee.remove({
+	"_id" : ObjectId("631982db808c576a9d644deb")
+})
+
+Reinsert
+--------
+db.employee.insert(
+{
+name: 'samwise gamajee',
+salary: 68000, 
+city: 'shire',
+department: 'ADMIN'
+})
+
+Update the record/document
+==========================
+
+Before Update
+-------------
+{
+        "_id" : ObjectId("631978e1808c576a9d644de6"),
+        "name" : "harry potter",
+        "salary" : 80000,
+        "city" : "london",
+        "department" : "IT",
+        "title" : "Quidich captain"
+}
+
+db.employee.update({
+	"_id" : ObjectId("631978e1808c576a9d644de6")
+},
+{ 
+	$set: {salary:85000} 
+})
+
+After Update
+------------
+{
+        "_id" : ObjectId("631978e1808c576a9d644de6"),
+        "name" : "harry potter",
+        "salary" : 85000,
+        "city" : "london",
+        "department" : "IT",
+        "title" : "Quidich captain"
+}
+
+Fetch the record based on ID
+============================
+db.employee.find().pretty() 
+: fetches all records
+
+db.employee.find({
+	"_id" : ObjectId("63197a7e808c576a9d644de7")
+}).pretty()
+
+Fetch record(s) based on fields
+===============================
+db.employee.find({
+	"city" : "london"
+}).pretty()
+
+: Displays all records having city:london
+
+Fetch Only one record
+=====================
+db.employee.findOne({
+	"city" : "london"
+})
+
+: This will fetch first matching record.
+Note: pretty() can be used with find() as there are multiple records to display. 
+
+Projections
+===========
+ db.employee.find({},{name:1,salary:1,_id:0}).pretty()
+
+- displays only name and salary. 
+
+Operators in Mongo
+==================
+$eq: equals
+$lt: less than
+$gt: greater than
+$lte:less than or equal to
+$gte:greater than or equal to
+$ne: not equal to 
+$in: checks in array of values 
+$nin: opposite of in
+
+Q. Fetch all employee working in department 'SALES'. 
+
+db.employee.find({
+	department: {$eq:'SALES'}
+}).pretty()
+
+db.employee.find({
+	city: {$eq:'shire'}
+}).pretty()
+
+Q. Fetch all employees having salary > 75000
+
+db.employee.find({
+	salary: {$gt: 75000}
+}).pretty()
+
+db.employee.find({
+	salary: {$gte: 75000}
+}).pretty()
+
+Q. Display all employees that have city in following list. 
+['london','shire','madrid']
+
+db.employee.find({
+	city: {$in: ['london','shire','madrid']}
+}).pretty()
+
+db.employee.find({
+	city: {$in: ['surrey','shire','madrid']}
+}).pretty()
+
+db.employee.find({
+	city: {$nin: ['surrey','shire','madrid']}
+}).pretty()
+
+AND & OR Operations
+===================
+Q. Display all employees having salary > 80000 and that live in one of the following cities. 
+['surrey','shire','madrid']
+
+db.employee.find({
+$and:[
+		{salary: {$gt: 80000}},
+		{city: {$in: ['surrey','shire','madrid']} }
+	  ]
+}).pretty()
+
+db.employee.find({
+$or:[
+		{salary: {$gt: 80000}},
+		{city: {$in: ['surrey','shire','madrid']} }
+	  ]
+}).pretty()
+
+Sorting 
+=======
+db.employee.find().sort({ salary: 1 }).pretty()
+
+{ salary: 1 }  : ASC
+{ salary: -1 } : DESC
+  
+
+db.employee.find({
+	city: {$in: ['surrey','shire','madrid']}
+}).sort({ salary: 1 }).pretty()
+
+Pagination
+==========
+- limit()
+- skip()
+
+db.employee.find({
+	city: {$in: ['surrey','shire','madrid']}
+}).sort({ salary: 1 }).limit(2).pretty()
+
+db.employee.find({
+	city: {$in: ['surrey','shire','madrid']}
+}).sort({ salary: 1 }).limit(2).skip(0).pretty()
+
+db.employee.find({
+	city: {$in: ['surrey','shire','madrid']}
+}).sort({ salary: 1 }).limit(2).skip(1).pretty()
+
+db.employee.find({
+	city: {$in: ['surrey','shire','madrid']}
+}).sort({ salary: 1 }).limit(2).skip(2).pretty()
+
+
+upsert()& save(): update & insert 
+=================================
+
+db.employee.save(
+{
+"_id" : ObjectId("631982db808c576a9d644dea"),
+name: 'frodo baggins',
+salary: 88000, 
+city: 'shire',
+department: 'SALES'
+}
+)
+
+- If the record is present as per the condition given, save is update.
+
+- If the record is not present as per the condition given, save is insert.
+ 
+db.employee.save(
+{
+"_id" : ObjectId("631982db808c576a9d644aec"),
+name: 'frodo baggins',
+salary: 90000, 
+city: 'shire',
+department: 'SALES'
+}
+)
+
+Upserted: Tried to update, but condition(ID) did not match so inserted. 
+
+when the insertion is done with save(): upserted becomes true(1)
+
+when the updatation is done with save(): upserted becomes false(0)  
+
+db.employee.save({
+        "_id" : ObjectId("631983b6808c576a9d644dec"),
+        "name" : "samwise gamajee",
+        "salary" : 70000,
+        "city" : "shire",
+        "department" : "ADMIN"
+}) 
+
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+
+db.employee.save({
+        "_id" : ObjectId("631983b6808c576a9d644aaa"),
+        "name" : "samwise gamajee",
+        "salary" : 70000,
+        "city" : "shire",
+        "department" : "ADMIN"
+}) 
+
+WriteResult({ "nMatched" : 0, "nUpserted" : 1, "nModified" : 0 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

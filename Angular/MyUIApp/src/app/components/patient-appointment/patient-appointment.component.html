@@ -1,0 +1,23 @@
+
+<div class="form">
+  <form #patientForm="ngForm" (submit)="onPatientSubmit(patientForm)">
+    <h2>Patient Appointment</h2>
+    <label>Name: </label>
+    <input type="text" name="name" ngModel #name="ngModel"><br /><br />
+    <label>Contact: </label>
+    <input type="text" name="contact" ngModel #contact="ngModel"><br /><br />
+    <label>Select Doctor: </label>
+    <select ngModel #doctor="ngModel" name="doctor" (change)="doctorSelect(patientForm)">
+      <option *ngFor="let d of doctorArry" value="{{d.id}}">{{d.name}} -- {{d.speciality}}</option>
+    </select> <br /><br />
+    <label>Select Slot: </label>
+    <select  ngModel #slots="ngModel" name="slots">
+      <option *ngFor="let s of slotsArry" value="{{s.id}}">{{s.time}}</option>
+    </select><br /><br />
+    <label>Appointment Date: </label>
+    <input type="date" name="apptDate" ngModel #apptDate="ngModel"><br /><br />
+
+    <input type="submit" value="Book Appointment">
+  </form>
+</div>
+

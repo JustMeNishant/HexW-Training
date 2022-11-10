@@ -1,0 +1,26 @@
+<div class="invoice">
+    <h3>BookMyFlight</h3>
+    <label>AirLines :</label>{{flight.name}}<br />
+
+    <label class="from">From</label><br />
+    {{flight.source}}
+
+    <label class="to">To</label><br />
+    {{flight.destination}}<br />
+
+    <label>Fare/Adult :</label>{{flight.adultFare}}&nbsp;&nbsp;<label>Fare/Child :</label>{{flight.childFare}}<br />
+    <form #fareForm="ngForm" (change)="change(fareForm)">
+        <label>No.of.Adults :</label>
+        <input type="number" name="no_of_adult" ngModel #no_of_adult="ngModel"><br />
+        <label>No.of.Children :</label>
+        <input type="number" name="no_of_children" ngModel #no_of_children="ngModel"><br />
+        <label>Total Fare : {{sum}}</label>
+    </form> 
+</div>
+
+
+
+
+
+  
+

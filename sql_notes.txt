@@ -1,0 +1,1214 @@
+Sql Programming: MySql DB 
+=========================
+DDL + DML + DQL 
+
+DDL (create DB/Table, Alter)
+DML (insert, update, delete)
+DQL (select)
+Queries on Single Table
+	- select, from, where, group by, having, order by, limit, offset 
+DB Design/ER Diagram
+	- Anomalies(insertion, updation, deletion)
+	- Normalization(1NF,2NF,3NF,BCNF)
+	- Keys(Primary,Foreign,Super,Secondary)
+Queries in Multiple tables
+	- Manual Mapping
+	- Nested Subqueries
+	- Joins 
+
+Create the DB
+-------------
+create database mycompanydb_55555;
+
+Select the Database
+-------------------
+use mycompanydb_55555;
+
+create the table (DDL: Data Definition Language)
+----------------
+mysql> create table employee(eid int, ename varchar(255), ecity varchar(255), esalary double);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> describe employee;
++---------+--------------+------+-----+---------+-------+
+| Field   | Type         | Null | Key | Default | Extra |
++---------+--------------+------+-----+---------+-------+
+| eid     | int(11)      | YES  |     | NULL    |       |
+| ename   | varchar(255) | YES  |     | NULL    |       |
+| ecity   | varchar(255) | YES  |     | NULL    |       |
+| esalary | double       | YES  |     | NULL    |       |
++---------+--------------+------+-----+---------+-------+
+
+drop the table
+--------------
+mysql> drop table employee;
+Query OK, 0 rows affected (0.01 sec)
+
+Working with Constraints
+------------------------
+mysql> create table employee(eid int primary key auto_increment, ename varchar(255) NOT NULL, ecity varchar(255), esalary double default 0);
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> describe employee;
++---------+--------------+------+-----+---------+----------------+
+| Field   | Type         | Null | Key | Default | Extra          |
++---------+--------------+------+-----+---------+----------------+
+| eid     | int(11)      | NO   | PRI | NULL    | auto_increment |
+| ename   | varchar(255) | NO   |     | NULL    |                |
+| ecity   | varchar(255) | YES  |     | NULL    |                |
+| esalary | double       | YES  |     | 0       |                |
++---------+--------------+------+-----+---------+----------------+
+
+Add Column in table using Alter [DML]
+-------------------------------
+mysql> alter table employee ADD eemail varchar(255) not null;
+
+mysql> describe employee;
++---------+--------------+------+-----+---------+----------------+
+| Field   | Type         | Null | Key | Default | Extra          |
++---------+--------------+------+-----+---------+----------------+
+| eid     | int(11)      | NO   | PRI | NULL    | auto_increment |
+| ename   | varchar(255) | NO   |     | NULL    |                |
+| ecity   | varchar(255) | YES  |     | NULL    |                |
+| esalary | double       | YES  |     | 0       |                |
+| eemail  | varchar(255) | NO   |     | NULL    |                |
++---------+--------------+------+-----+---------+----------------+
+
+Delete column from the table using Alter
+----------------------------------------
+mysql> alter table employee DROP eemail;
+
+mysql> describe employee;
++---------+--------------+------+-----+---------+----------------+
+| Field   | Type         | Null | Key | Default | Extra          |
++---------+--------------+------+-----+---------+----------------+
+| eid     | int(11)      | NO   | PRI | NULL    | auto_increment |
+| ename   | varchar(255) | NO   |     | NULL    |                |
+| ecity   | varchar(255) | YES  |     | NULL    |                |
+| esalary | double       | YES  |     | 0       |                |
++---------+--------------+------+-----+---------+----------------+
+
+Modify the datatype of existing column
+--------------------------------------
+mysql> alter table employee MODIFY COLUMN ecity text;
+
+mysql> describe employee;
++---------+--------------+------+-----+---------+----------------+
+| Field   | Type         | Null | Key | Default | Extra          |
++---------+--------------+------+-----+---------+----------------+
+| eid     | int(11)      | NO   | PRI | NULL    | auto_increment |
+| ename   | varchar(255) | NO   |     | NULL    |                |
+| ecity   | text         | YES  |     | NULL    |                |
+| esalary | double       | YES  |     | 0       |                |
++---------+--------------+------+-----+---------+----------------+
+
+Rename columns
+--------------
+mysql> alter table employee
+    -> CHANGE eid id int;
+
+mysql> alter table employee MODIFY COLUMN id int auto_increment;
+
+mysql> describe employee;
++---------+--------------+------+-----+---------+----------------+
+| Field   | Type         | Null | Key | Default | Extra          |
++---------+--------------+------+-----+---------+----------------+
+| id      | int(11)      | NO   | PRI | NULL    | auto_increment |
+| ename   | varchar(255) | NO   |     | NULL    |                |
+| ecity   | text         | YES  |     | NULL    |                |
+| esalary | double       | YES  |     | 0       |                |
++---------+--------------+------+-----+---------+----------------+
+
+Renaming multiple columns
+-------------------------
+mysql> alter table employee
+    -> CHANGE ename name varchar(255),
+    -> CHANGE ecity city text,
+    -> CHANGE esalary salary double;
+
+mysql> describe employee;
++--------+--------------+------+-----+---------+----------------+
+| Field  | Type         | Null | Key | Default | Extra          |
++--------+--------------+------+-----+---------+----------------+
+| id     | int(11)      | NO   | PRI | NULL    | auto_increment |
+| name   | varchar(255) | YES  |     | NULL    |                |
+| city   | text         | YES  |     | NULL    |                |
+| salary | double       | YES  |     | NULL    |                |
++--------+--------------+------+-----+---------+----------------+
+
+Inserting records in the table
+------------------------------
+insert into employee(name, city, salary) values ('harry potter', 'london', 85000); 
+insert into employee(name, city, salary) values ('ronald weasley', 'surrey', 75000);
+insert into employee(name, city, salary) values ('hermione granger', 'london', 90000);
+insert into employee(name, city, salary) values ('draco malfoy', 'london', 80000);
+insert into employee(name, city, salary) values ('neville longbottom', 'manchester', 70000);
+insert into employee(name, city, salary) values ('ginni weasley', 'surrey', 68000);
+insert into employee(name, city, salary) values ('sedric williams', 'manchester', 72000);
+insert into employee(name, city, salary) values ('lola greenwich', 'london', 84000);
+
+mysql> select * from employee;
++----+--------------------+------------+--------+
+| id | name               | city       | salary |
++----+--------------------+------------+--------+
+|  1 | harry potter       | london     |  85000 |
+|  2 | ronald weasley     | surrey     |  75000 |
+|  3 | hermione granger   | london     |  90000 |
+|  4 | draco malfoy       | london     |  80000 |
+|  5 | neville longbottom | manchester |  70000 |
+|  6 | ginni weasley      | surrey     |  68000 |
+|  7 | sedric williams    | manchester |  72000 |
+|  8 | lola greenwich     | london     |  84000 |
++----+--------------------+------------+--------+
+
+SQL Queries
+===========
+SQL: Structured Query Language 
+
+select <column-names> 		--mandatory
+from <table-name><alias>	--mandatory
+where <condition>			--filter/criteria -- optional
+group by <column>			--optional
+having <criteria on group func> --optional
+order by column ASC|DESC	--optional
+limit <num_of_rows>			--optional
+offset <start_point>		--optional
+
+Working with projections in select statement
+---------------------------------------------
+mysql> select name
+    -> from employee;
+
+
+mysql> select name,city
+    -> from employee;
+
+
+mysql> select e.name,e.city
+    -> from employee e;    //referencing
+
+
+mysql> select e.name,e.city
+    -> from employee as e;   //renaming
+
+
+mysql> select name as employee_name,  //rename or variables
+		city as employee_city
+       from employee;   
+
+Applying criteria in where clause
+---------------------------------
+
+mysql> select *
+    -> from employee
+    -> where city ='london';
+
+mysql> select *
+    -> from employee
+    -> where salary >= 75000;
+
+mysql> select *
+    -> from employee
+    -> where salary >= 75000 AND city='london';
+
+mysql> select *
+    -> from employee
+    -> where salary >= 75000 OR city='london';
+
+UC: display employees having salary in range 70000 to 80000 
+-----------------------------------------------------------
+mysql> select *
+    -> from employee
+    -> where salary BETWEEN 70000 AND 80000;
+
+mysql> select *
+    -> from employee
+    -> where salary>70000 AND salary<80000;
+
+mysql> select *
+    -> from employee
+    -> where salary NOT BETWEEN 70000 AND 80000;
+
+UC: display employees that belong to one of following city. 
+cities=['london', 'madrid','surrey']
+-----------------------------------------------------------
+
+mysql> select name,city from employee where city='london'
+    -> UNION
+    -> select name,city from employee where city='surrey'
+    -> UNION
+    -> select name,city from employee where city='madrid';
++------------------+--------+
+| name             | city   |
++------------------+--------+
+| harry potter     | london |
+| hermione granger | london |
+| draco malfoy     | london |
+| lola greenwich   | london |
+| ronald weasley   | surrey |
+| ginni weasley    | surrey |
++------------------+--------+ 
+
+mysql> select name,city from employee where city IN ('london', 'madrid','surrey');
++------------------+--------+
+| name             | city   |
++------------------+--------+
+| harry potter     | london |
+| ronald weasley   | surrey |
+| hermione granger | london |
+| draco malfoy     | london |
+| ginni weasley    | surrey |
+| lola greenwich   | london |
++------------------+--------+
+
+mysql> select name,city from employee where city NOT IN ('london', 'madrid','surrey');
++--------------------+------------+
+| name               | city       |
++--------------------+------------+
+| neville longbottom | manchester |
+| sedric williams    | manchester |
++--------------------+------------+
+
+LIKE Keyword
+------------
+UC: display employees having following pattern in their names "ar" 
+
+mysql> select name,city
+    -> from employee
+    -> where name LIKE '%ar%';
++--------------+--------+
+| name         | city   |
++--------------+--------+
+| harry potter | london |
++--------------+--------+
+1 row in set (0.00 sec)
+
+mysql> select name,city
+    -> from employee
+    -> where name LIKE '%gr%';
++------------------+--------+
+| name             | city   |
++------------------+--------+
+| hermione granger | london |
+| lola greenwich   | london |
++------------------+--------+
+2 rows in set (0.00 sec)
+
+UC: display employees having pattern "h" as beginning of their names. 
+
+mysql> select * from employee where name LIKE 'h%';
++----+------------------+--------+--------+
+| id | name             | city   | salary |
++----+------------------+--------+--------+
+|  1 | harry potter     | london |  85000 |
+|  3 | hermione granger | london |  90000 |
++----+------------------+--------+--------+
+
+UC: display employees having pattern "y" as last char of their names. 
+
+mysql> select * from employee where name LIKE '%y';
++----+----------------+--------+--------+
+| id | name           | city   | salary |
++----+----------------+--------+--------+
+|  2 | ronald weasley | surrey |  75000 |
+|  4 | draco malfoy   | london |  80000 |
+|  6 | ginni weasley  | surrey |  68000 |
++----+----------------+--------+--------+
+
+UC: display employees having pattern "on" starting second char in the names. 
+
+mysql> select * from employee where name LIKE '_on%';
++----+----------------+--------+--------+
+| id | name           | city   | salary |
++----+----------------+--------+--------+
+|  2 | ronald weasley | surrey |  75000 |
++----+----------------+--------+--------+
+
+Note: _ is to skip the characters
+
+_o : second char should be o
+o_ : second from end should be o
+__o: third from beginning should be o 
+
+
+SQL
+---
+select
+from
+where 
+
+Aggregate / Grouping Functions
+==============================
+- sum
+- min
+- max
+- avg
+- count 
+
+ex. 
+mysql> select max(salary) from employee;
++-------------+
+| max(salary) |
++-------------+
+|       90000 |
++-------------+
+1 row in set (0.01 sec)
+
+mysql> select min(salary) from employee;
++-------------+
+| min(salary) |
++-------------+
+|       68000 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select sum(salary) from employee;
++-------------+
+| sum(salary) |
++-------------+
+|      624000 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select avg(salary) from employee;
++-------------+
+| avg(salary) |
++-------------+
+|       78000 |
++-------------+
+
+ex. 
+mysql> select COUNT(id) from employee;
++-----------+
+| COUNT(id) |
++-----------+
+|         8 |
++-----------+
+
+UC: display number of employees living in each city. 
+
+select COUNT(id) as number_of_employees
+from employee 
+group by city 
+
+city=london		COUNT(id)=4
+|  1 | harry potter       | london     |  85000 |
+|  3 | hermione granger   | london     |  90000 |
+|  4 | draco malfoy       | london     |  80000 |
+|  8 | lola greenwich     | london     |  84000 |
+
+city=surrey	COUNT(id) = 2
+|  2 | ronald weasley     | surrey     |  75000 |
+|  6 | ginni weasley      | surrey     |  68000 |
+
+city=manchester COUNT(id)=2
+|  5 | neville longbottom | manchester |  70000 |
+|  7 | sedric williams    | manchester |  72000 |
+
+
++------------+---------------------+
+| city       | number_of_employees |
++------------+---------------------+
+| london     |                   4 |
+| manchester |                   2 |
+| surrey     |                   2 |
++------------+---------------------+
+
+UC: compute AVG salary of employees for every city. 
+
+mysql> select city, AVG(salary) as average_salary
+    -> from employee
+    -> group by city;
++------------+----------------+
+| city       | average_salary |
++------------+----------------+
+| london     |          84750 |
+| manchester |          71000 |
+| surrey     |          71500 |
++------------+----------------+
+
+UC: count number of employees in each city.display only those cities having count of employees more than 2. 
+
+[wrong query]
+mysql> select city, COUNT(id) as number_of_employees
+    -> from employee
+    -> where number_of_employees > 2
+    -> group by city;
+
+ERROR 1054 (42S22): Unknown column 'number_of_employees' in 'where clause'
+
+mysql> select city, COUNT(id) as number_of_employees
+    -> from employee
+    -> where COUNT(id) > 2
+    -> group by city;
+ERROR 1111 (HY000): Invalid use of group function
+
+Solution:
+---------
+mysql> select city, COUNT(id) as number_of_employees
+    -> from employee
+    -> group by city
+    -> having number_of_employees>2;
++--------+---------------------+
+| city   | number_of_employees |
++--------+---------------------+
+| london |                   4 |
++--------+---------------------+
+
+Note: Having allows gouping function whereas where clause does not allow group function. 
+
+Order by
+=========
+UC: display city with number of employees in ASC order. 
+
+mysql> select city, count(id)
+    -> from employee
+    -> group by city
+    -> order by count(id) ASC;
++------------+-----------+
+| city       | count(id) |
++------------+-----------+
+| surrey     |         2 |
+| manchester |         2 |
+| london     |         4 |
++------------+-----------+
+3 rows in set (0.02 sec)
+
+mysql> select city, count(id) as count
+    -> from employee
+    -> group by city
+    -> order by count DESC;
++------------+-------+
+| city       | count |
++------------+-------+
+| london     |     4 |
+| surrey     |     2 |
+| manchester |     2 |
++------------+-------+
+3 rows in set (0.02 sec)
+
+mysql> select city, count(id) as count
+    -> from employee
+    -> group by city
+    -> order by count;
++------------+-------+
+| city       | count |
++------------+-------+
+| surrey     |     2 |
+| manchester |     2 |
+| london     |     4 |
++------------+-------+
+3 rows in set (0.02 sec)
+
+limit
+======
+display city with AVG salary. Order by avg salary DESC.  the result set must have only first 2 records. 
+
+mysql> select city, AVG(salary) as avg_salary
+    -> from employee
+    -> group by city
+    -> order by avg_salary DESC
+    -> limit 2;
++--------+------------+
+| city   | avg_salary |
++--------+------------+
+| london |      84750 |
+| surrey |      71500 |
++--------+------------+
+
+UC: In the above query, ignore the city having highest avg salary. 
+
++------------+------------+
+| city       | avg_salary |  Offset
++------------+------------+
+| london     |      84750 |    0 
+| surrey     |      71500 |	 1	
+| manchester |      71000 |    2
++------------+------------+
+
+limit 2
+offset 0 
+
+| london     |      84750 |  
+| surrey     |      71500 | 
+
+limit 2
+offset 1 
+
+| surrey     |      71500 |	 
+| manchester |      71000 | 
+
+limit 2
+offset 2
+
+| manchester |      71000 |  
+
+Solution: 
+---------
+mysql> select city, AVG(salary) as avg_salary
+    -> from employee
+    -> group by city
+    -> order by avg_salary DESC
+    -> limit 2
+    -> offset 1;
++------------+------------+
+| city       | avg_salary |
++------------+------------+
+| surrey     |      71500 |
+| manchester |      71000 |
++------------+------------+
+
+Alternatively 
+-------------
+mysql> select city, AVG(salary) as avg_salary
+    -> from employee
+    -> group by city
+    -> order by avg_salary DESC
+    -> limit 1,2;	<-- 1 is the offset and 2 is limit
++------------+------------+
+| city       | avg_salary |
++------------+------------+
+| surrey     |      71500 |
+| manchester |      71000 |
++------------+------------+
+
+SET Operators
+=============
+- UNION
+- INTERSECT 
+
+ex. 
+
+mysql> select name,city
+    -> from employee
+    -> where city="london"
+    -> INTERSECT
+    -> select name,city
+    -> from employee
+    -> where salary>80000;
+
+equivalent to: 
+where city='london' AND salary>80000
+
+ex. product(id,title,price,vendor,category)
+
+perform all ops on this table. 
+perform grouping on vendor and category. 
+
+
+UPDATE column values
+====================
+UC: update the name of employees by using upper case names for employees living in surrey. 
+
+update <table-name>
+SET <column=value>
+where <condition>
+
+Solution:
+---------
+mysql> update employee
+    -> SET name = UPPER(name)
+    -> where city='surrey';
+
+UC: give 10% increment in salary for employees that live in manchester. 
+
+Solution:
+---------
+mysql> update employee
+    -> SET salary = salary + (salary * 0.10)
+    -> where city='manchester';
+
+DELETE COLUMN
+=============
+UC: delete employee having id=7
+
+mysql> DELETE from employee where id=7;
+Query OK, 1 row affected (0.02 sec)
+
+MULTI-TABLE OPERATIONS
+======================
+
+Normalization
+=============
+Anomalies
+---------
+1. Insertion Anomaly
+2. Updation Anomaly
+3. Deletion Anomaly 
+
+To counter anomalies, we use normalization. 
+
+1NF
+- split the large table into smaller tables(entities)
+2NF
+- identify the columns that can be further divided and create a separate table for it
+3NF
+- establish relationships between tables
+BCNF
+- add attributes in realtionship table
+
+Ex.
+Consider a college table having following columns
+
+college(id,student_name,student_email,student_address,
+course_name,course_credits,course_fee,department_name)
+
+Use Normalization and create the schema. 
+
+1NF
+---
+student(id,name,email,address)
+course(id,name,credits,fee)
+department(id,name)
+
+2NF
+---
+student(id,name,email)
+address(id,street,pincode,city)
+course(id,name,credits,fee)
+department(id,name)
+
+3NF
+---
+student M:N course  : create separate relation table
+student 1:1 address : add address_id in student or vice-versa
+course  M:1 department : add department_id in course
+
+student(id,name,email,address_id)
+address(id,hno,pincode,city)
+course(id,name,credits,fee,department_id)
+department(id,name)
+student_course(student_id,course_id)
+
+BCNF
+----
+add column in relationship table. 
+student enrolls in course at a specific date.
+
+student_course(student_id,course_id,enroll_date)
+
+
+Final Schema
+------------
+student(id,name,email,address_id)
+address(id,hno,pincode,city)
+course(id,name,credits,fee,department_id)
+department(id,name)
+student_course(student_id,course_id,enroll_date)
+
+
+Practice: 
+---------
+An employees works on project which belongs to department. 
+
+company(id,employee_name,employee_email,employee_address,
+project_title,project_budget,department_name)
+
+Business rules for relationships:
+- 1 employee has 1 address. 
+- 1 employee works on many projects and 1 project can have many employees
+- 1 department has many courses and 1 course has 1 department. 
+
+Create a Schema and draw ER diagram on MySqlWorkbench: 
+
+
+-- MySQL Workbench Forward Engineering
+
+
+-- -----------------------------------------------------
+-- Schema college_55555
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema college_55555
+-- -----------------------------------------------------
+
+CREATE SCHEMA IF NOT EXISTS `college_55555` DEFAULT CHARACTER SET utf8 ;
+USE `college_55555` ;
+
+-- -----------------------------------------------------
+-- Table `college_55555`.`address`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `college_55555`.`address` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `street` VARCHAR(255) NOT NULL,
+  `pincode` VARCHAR(45) NOT NULL,
+  `city` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `college_55555`.`student`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `college_55555`.`student` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(255) NOT NULL,
+  `email` VARCHAR(255) NOT NULL,
+  `address_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_student_address1_idx` (`address_id` ASC) ,
+  CONSTRAINT `fk_student_address1`
+    FOREIGN KEY (`address_id`)
+    REFERENCES `college_55555`.`address` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `college_55555`.`department`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `college_55555`.`department` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `college_55555`.`course`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `college_55555`.`course` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(255) NOT NULL,
+  `credits` INT NOT NULL,
+  `fee` DOUBLE NOT NULL,
+  `department_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_course_department1_idx` (`department_id` ASC) ,
+  CONSTRAINT `fk_course_department1`
+    FOREIGN KEY (`department_id`)
+    REFERENCES `college_55555`.`department` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `college_55555`.`student_course`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `college_55555`.`student_course` (
+  `student_id` INT NOT NULL,
+  `course_id` INT NOT NULL,
+  `enroll_date` DATE NULL,
+  PRIMARY KEY (`student_id`, `course_id`),
+  INDEX `fk_student_has_course_course1_idx` (`course_id` ASC) ,
+  INDEX `fk_student_has_course_student_idx` (`student_id` ASC) ,
+  CONSTRAINT `fk_student_has_course_student`
+    FOREIGN KEY (`student_id`)
+    REFERENCES `college_55555`.`student` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_student_has_course_course1`
+    FOREIGN KEY (`course_id`)
+    REFERENCES `college_55555`.`course` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+Insertions
+==========
+mysql> insert into address(street,pincode,city) values('101 kingston avenue','TW31SE','london');
+
+mysql> insert into student(name,email,address_id) values ('harry potter','harry@gmail.com',1);
+
+mysql> insert into address(street,pincode,city) values('23 Isleworth lane','TW21DE','surrey');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into student(name,email,address_id) values ('ronald weasley','ronald@gmail.com',2);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into address(street,pincode,city) values('222 Harbard Lane','LS33DF','london');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into student(name,email,address_id) values ('hermione granger','hermione@gmail.com',3);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into address(street,pincode,city) values('154 kensington avenue','KS42CV','london');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into student(name,email,address_id) values ('draco malfoy','draco@gmail.com',4);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into address(street,pincode,city) values('89 shepards bush','SHGE45','surrey');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into student(name,email,address_id) values ('neville longbottom','neville@gmail.com',5);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from student;
++----+--------------------+--------------------+------------+
+| id | name               | email              | address_id |
++----+--------------------+--------------------+------------+
+|  1 | harry potter       | harry@gmail.com    |          1 |
+|  2 | ronald weasley     | ronald@gmail.com   |          2 |
+|  3 | hermione granger   | hermione@gmail.com |          3 |
+|  4 | draco malfoy       | draco@gmail.com    |          4 |
+|  5 | neville longbottom | neville@gmail.com  |          5 |
++----+--------------------+--------------------+------------+
+
+mysql> select * from address;
++----+-----------------------+---------+--------+
+| id | street                | pincode | city   |
++----+-----------------------+---------+--------+
+|  1 | 101 kingston avenue   | TW31SE  | london |
+|  2 | 23 Isleworth lane     | TW21DE  | surrey |
+|  3 | 222 Harbard Lane      | LS33DF  | london |
+|  4 | 154 kensington avenue | KS42CV  | london |
+|  5 | 89 shepards bush      | SHGE45  | surrey |
++----+-----------------------+---------+--------+
+
+mysql> insert into department(name) values ('IT'),('CS');
+
+mysql> insert into course(name,credits,fee,department_id) values
+    -> ('JAVA', 100, 10000, 1),
+    -> ('ANGULAR', 80, 9000,2),
+    -> ('SQL', 70,8500,1),
+    -> ('PYTHON',75,8000,2);
+
+mysql> select * from course;
++----+---------+---------+-------+---------------+
+| id | name    | credits | fee   | department_id |
++----+---------+---------+-------+---------------+
+|  1 | JAVA    |     100 | 10000 |             1 |
+|  2 | ANGULAR |      80 |  9000 |             2 |
+|  3 | SQL     |      70 |  8500 |             1 |
+|  4 | PYTHON  |      75 |  8000 |             2 |
++----+---------+---------+-------+---------------+
+
+mysql> select * from department;
++----+------+
+| id | name |
++----+------+
+|  1 | IT   |
+|  2 | CS   |
++----+------+
+
+mysql> insert into student_course(student_id,course_id,enroll_date) values
+    -> (1,1,'2022-07-10'),
+    -> (1,4,'2022-07-12'),
+    -> (2,2,'2022-07-15'),
+    -> (3,1,'2022-07-08'),
+    -> (3,2,'2022-07-08'),
+    -> (3,3,'2022-07-08'),
+    -> (4,2,'2022-07-11'),
+    -> (5,3,'2022-07-20');
+
+Queries using manual mapping
+----------------------------
+
+Query 1: 
+--------
+Display all students that live in city 'london'. 
+
+mysql> select s.id,s.name,s.email,a.city
+    -> from student s, address a
+    -> where s.address_id=a.id AND a.city='london';
++----+------------------+--------------------+--------+
+| id | name             | email              | city   |
++----+------------------+--------------------+--------+
+|  1 | harry potter     | harry@gmail.com    | london |
+|  3 | hermione granger | hermione@gmail.com | london |
+|  4 | draco malfoy     | draco@gmail.com    | london |
++----+------------------+--------------------+--------+
+
+Query 2:
+--------
+Display all courses that belong to department 'IT'. 
+
+mysql> select c.name,d.name
+    -> from course c,department d
+    -> where c.department_id = d.id AND d.name='IT';
++------+------+
+| name | name |
++------+------+
+| JAVA | IT   |
+| SQL  | IT   |
++------+------+
+
+Query 3
+-------
+Display student info that have enrolled in course 'Java'. 
+
+mysql> select s.name,s.email,c.name
+    -> from student s, student_course sc,course c
+    -> where s.id=sc.student_id AND
+    -> sc.course_id = c.id AND
+    -> c.name='JAVA';
++------------------+--------------------+------+
+| name             | email              | name |
++------------------+--------------------+------+
+| harry potter     | harry@gmail.com    | JAVA |
+| hermione granger | hermione@gmail.com | JAVA |
++------------------+--------------------+------+
+
+Query 4: 
+--------
+Display the names of courses enrolled by student having email 'ronald@gmail.com'
+
+mysql> select c.name,c.credits,s.name
+    -> from student s, student_course sc,course c
+    -> where s.id=sc.student_id AND
+    -> sc.course_id = c.id AND
+    -> s.email='ronald@gmail.com';
++---------+---------+----------------+
+| name    | credits | name           |
++---------+---------+----------------+
+| ANGULAR |      80 | ronald weasley |
++---------+---------+----------------+
+
+Query 5:
+--------
+display the students associated with 'IT' department. 
+
+mysql> select distinct s.name, d.name
+    -> from student s, student_course sc, course c,department d
+    -> where s.id=sc.student_id AND
+    -> sc.course_id = c.id AND
+    -> c.department_id = d.id AND
+    -> d.name='IT';
++--------------------+------+
+| name               | name |
++--------------------+------+
+| harry potter       | IT   |
+| hermione granger   | IT   |
+| neville longbottom | IT   |
++--------------------+------+
+
+Query 6
+-------
+display the courses enrolled by students living in city 'london'. 
+
+
+Queries using Nested / Sub Queries 
+==================================
+Query 1: 
+--------
+Display all students that live in city 'london'.
+
+mysql> select name
+    -> from student
+    -> where address_id=(select id from address where city='london');
+ERROR 1242 (21000): Subquery returns more than 1 row
+
+Solution:
+---------
+mysql> select name from student where address_id IN 
+(select id from address where city='london');
++------------------+
+| name             |
++------------------+
+| harry potter     |
+| hermione granger |
+| draco malfoy     |
++------------------+
+
+
+Query 2:
+--------
+Display all courses that belong to department 'IT'. 
+
+mysql> select name
+    -> from course
+    -> where department_id IN 
+(select id from department where name='IT');
++------+
+| name |
++------+
+| JAVA |
+| SQL  |
++------+
+
+Query 3
+-------
+Display student info that have enrolled in course 'Java'. 
+
+select name
+from student
+where id IN (select student_id 
+            from student_course
+            where course_id IN (select id 
+                                from course
+                                where name='JAVA'))
+
++------------------+
+| name             |
++------------------+
+| harry potter     |
+| hermione granger |
++------------------+
+
+Query 4: 
+--------
+Display the names of courses enrolled by student having email 'hermione@gmail.com'
+
+Writing Queries with Joins
+==========================
+
+1. INNER JOIN / JOIN  => [Natural Join] 
+2. LEFT JOIN / LEFT OUTER JOIN 
+3. RIGHT JOIN / RIGHT OUTER JOIN
+
+Query 1: 
+--------
+Display all students that live in city 'london'.
+
+mysql> select s.name
+    -> from student s JOIN address a ON s.address_id = a.id
+    -> where a.city='london';
++------------------+
+| name             |
++------------------+
+| harry potter     |
+| hermione granger |
+| draco malfoy     |
++------------------+
+
+Alternatively,
+
+mysql> select s.name
+    -> from student s INNER JOIN address a ON s.address_id = a.id
+    -> where a.city='london';
++------------------+
+| name             |
++------------------+
+| harry potter     |
+| hermione granger |
+| draco malfoy     |
++------------------+
+
+Query 5:
+--------
+display the students associated with 'IT' department.
+
+select distinct s.name
+from student s 
+JOIN student_course sc ON s.id=sc.student_id 
+JOIN course c ON sc.course_id = c.id 
+JOIN department d ON c.department_id = d.id
+where d.name='IT'
+
++--------------------+
+| name               |
++--------------------+
+| harry potter       |
+| hermione granger   |
+| neville longbottom |
++--------------------+
+
+
+LEFT JOIN / LEFT OUTER JOIN
+----------------------------
+
+DDL
+---
+mysql> create table product(id int primary key, name varchar(255), price double, vendor_id int);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> create table vendor(id int primary key, name varchar(255));
+Query OK, 0 rows affected (0.01 sec)
+
+DML
+---
+mysql> insert into vendor(id,name) values 
+(1,'ABC Electronics'),
+(2, 'XYZ Electronics'),
+(3,'PQR Electronics');
+
+mysql> insert into product(id,name,price,vendor_id)
+    -> values (1,'OPPO A15',16000,1),
+    -> (2,'Apple IPhone SE', 20000,2),
+    -> (3,'Samsung Z12',13000,null);
+
+
+mysql> select * from product;
++----+-----------------+-------+-----------+
+| id | name            | price | vendor_id |
++----+-----------------+-------+-----------+
+|  1 | OPPO A15        | 16000 |         1 |
+|  2 | Apple IPhone SE | 20000 |         2 |
+|  3 | Samsung Z12     | 13000 |      NULL |
++----+-----------------+-------+-----------+
+
+mysql> select * from vendor;
++----+-----------------+
+| id | name            |
++----+-----------------+
+|  1 | ABC Electronics |
+|  2 | XYZ Electronics |
+|  3 | PQR Electronics |
++----+-----------------+
+
+DQL
+---
+List of all products along with vendor info(if available). 
+
+mysql> select *
+    -> from product p JOIN vendor v ON p.vendor_id = v.id;
++----+-----------------+-------+-----------+----+-----------------+
+| id | name            | price | vendor_id | id | name            |
++----+-----------------+-------+-----------+----+-----------------+
+|  1 | OPPO A15        | 16000 |         1 |  1 | ABC Electronics |
+|  2 | Apple IPhone SE | 20000 |         2 |  2 | XYZ Electronics |
++----+-----------------+-------+-----------+----+-----------------+
+
+[Not the result we want. some products are missing.]
+
+
+mysql> select *
+    -> from product p LEFT JOIN vendor v ON p.vendor_id = v.id;
++----+-----------------+-------+-----------+------+-----------------+
+| id | name            | price | vendor_id | id   | name            |
++----+-----------------+-------+-----------+------+-----------------+
+|  1 | OPPO A15        | 16000 |         1 |    1 | ABC Electronics |
+|  2 | Apple IPhone SE | 20000 |         2 |    2 | XYZ Electronics |
+|  3 | Samsung Z12     | 13000 |      NULL | NULL | NULL            |
++----+-----------------+-------+-----------+------+-----------------+
+
+OR
+
+mysql> select *
+    -> from product p LEFT OUTER JOIN vendor v ON p.vendor_id = v.id;
+
+Query: 
+Display all vendors with their product info(if available). 
+
+mysql> select *
+    -> from product p RIGHT JOIN vendor v ON p.vendor_id = v.id;
++------+-----------------+-------+-----------+----+-----------------+
+| id   | name            | price | vendor_id | id | name            |
++------+-----------------+-------+-----------+----+-----------------+
+|    1 | OPPO A15        | 16000 |         1 |  1 | ABC Electronics |
+|    2 | Apple IPhone SE | 20000 |         2 |  2 | XYZ Electronics |
+| NULL | NULL            |  NULL |      NULL |  3 | PQR Electronics |
++------+-----------------+-------+-----------+----+-----------------+
+
+OR 
+
+mysql> select *
+    -> from product p RIGHT OUTER JOIN vendor v ON p.vendor_id = v.id;
+
+
+LEFT + RIGHT JOIN
+=================
+mysql> select *
+    -> from product p LEFT JOIN vendor v ON p.vendor_id = v.id
+    -> UNION
+    -> select *
+    -> from product p RIGHT JOIN vendor v ON p.vendor_id = v.id;
++------+-----------------+-------+-----------+------+-----------------+
+| id   | name            | price | vendor_id | id   | name            |
++------+-----------------+-------+-----------+------+-----------------+
+|    1 | OPPO A15        | 16000 |         1 |    1 | ABC Electronics |
+|    2 | Apple IPhone SE | 20000 |         2 |    2 | XYZ Electronics |
+|    3 | Samsung Z12     | 13000 |      NULL | NULL | NULL            |
+| NULL | NULL            |  NULL |      NULL |    3 | PQR Electronics |
++------+-----------------+-------+-----------+------+-----------------+
+
+
+
+
+
+
+

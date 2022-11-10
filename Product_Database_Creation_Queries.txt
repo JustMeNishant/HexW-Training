@@ -1,0 +1,14 @@
+MYSQL Table Creation
+create database assignment1_80625;
+use assignment1_80625;
+drop table products;
+create table products(id int primary key auto_increment,name varchar(255), price double, descrip varchar(255) , category varchar(255));
+describe products;
+
+insert into products(name,price,descrip,category)values('Poco M2 Pro',14999, '64GB Rom, 8GB Ram, 5.7"','Mobile');
+insert into products(name,price,descrip,category)values('Realme C2',8999, '64GB Rom, 8GB RAM, 5.8"','Mobile');
+insert into products(name,price,descrip,category)values('Vivo V20',229999, '128GB ROM, 6GB RAM, 6.2"','Mobile');
+insert into products(name,price,descrip,category)values('Apple Iphone 14',119999, '256GB Rom , 8Gg RAM ,6.0','Mobile');
+insert into products(name,price,descrip,category)values('Apple Macbook',118000, '256GB Rom ,16GB RAM, M2-Chip','Laptop');
+insert into products(name,price,descrip,category)values('Lenevo Ideapad Gaming 3',69999, '1 TB HDD+ 256GB SSD , 8GB Ram , Intel I5-11th Gen','Laptop');
+select * from products;

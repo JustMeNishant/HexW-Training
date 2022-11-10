@@ -1,0 +1,384 @@
+PL/SQL Notes
+------------
+
+SET SERVEROUTPUT ON
+
+create table employee_55555(
+    emp_id number(6) NOT NULL, 
+    emp_name varchar2(255), 
+    branch varchar2(255), 
+    department varchar2(255),
+    salary number(10,2),
+    PRIMARY KEY(emp_id)
+)
+
+select * from employee_55555;
+
+INSERT INTO employee_55555 values (1, 'harry potter', 'mumbai', 'sales', 95000);
+INSERT INTO employee_55555 values (2, 'ronald weasley', 'mumbai', 'sales', 90000);
+INSERT INTO employee_55555 values (3, 'hermione granger','london', 'sales', 120000);
+INSERT INTO employee_55555 values (4, 'draco malfoy', 'london', 'sales', 85000);  
+
+INSERT INTO employee_55555 values (5, 'peter parker', 'london', 'IT', 90000); 
+INSERT INTO employee_55555 values (6, 'jack squire', 'mumbai', 'IT', 80000);
+
+INSERT INTO employee_55555 values (7, 'frodo baggins', 'shire', 'MARKETING', 95000);
+INSERT INTO employee_55555 values (8, 'bilbo baggins', 'shire', 'MARKETING', 85000);
+INSERT INTO employee_55555 values (9, 'samwise gamaje', 'shire', 'MARKETING', 70000);
+ 
+/*
+    Procedures are of 2 types
+    1. Anonymous (cannot be saved)
+    2. Stored (can be saved and executed at any later time)
+*/
+
+-- create a hello message anonymous procedure 
+DECLARE
+    name varchar2(50);
+BEGIN 
+    name :=  'Harry';
+    dbms_output.put_line('welcome ' || name);
+END;
+/
+
+--work with variables 
+DECLARE
+    marks_secured number;
+    total_marks number;
+    percent number; 
+BEGIN
+    marks_secured := 165;
+    total_marks := 200;
+    percent := (marks_secured * 100) / total_marks; 
+    dbms_output.put_line('you scored ' || percent);
+END;
+/
+
+-- simple stored procedure: It can be called anytime after it is created
+CREATE OR REPLACE PROCEDURE welcome_proc_55555(name IN varchar2) IS
+BEGIN
+    dbms_output.put_line('welcome ' || name);
+END;
+/
+
+--call the precedure with anonymous proc
+BEGIN
+    welcome_proc_55555('john');
+END;
+/
+
+/*
+    syntax of if/if-else
+    
+    if <condition> then
+        do something
+    end if; 
+    
+    if <condition> then
+        do something
+    else
+        do something else
+    end if; 
+*/
+
+
+/*
+    create a proc to compute the minimum of 2 numbers. 
+*/
+
+CREATE OR REPLACE PROCEDURE compute_min_55555(num1 IN number, num2 IN number, result OUT number) IS
+BEGIN
+    if num1 < num2 THEN
+        result := num1;
+    else
+        result := num2;
+    end if;
+END;
+/
+
+--call the proc
+DECLARE
+  x number; 
+  y number; 
+  res number; 
+BEGIN
+    x := 15;
+    y := 6;
+    compute_min_55555(x,y,res);
+    dbms_output.put_line('Min is ' || res);
+END;
+
+-- write a proc to compute AVG salary of the employee based on department given 
+
+CREATE OR REPLACE PROCEDURE avg_emp_sal_55555(dept IN varchar2, avg_sal OUT number) IS
+BEGIN
+    select AVG(salary) into avg_sal
+    from employee_55555
+    where department = dept;
+END;
+/
+
+
+DECLARE 
+    result number := 0;
+BEGIN
+    avg_emp_sal_55555('sales',result);
+    dbms_output.put_line('avg sal ' || result);
+END;
+/
+
+/*
+    Given the department name increment the salary as per following:
+    IT: 5%
+    sales: 7%
+    MARKETING: 10%
+*/
+CREATE OR REPLACE PROCEDURE sal_incr_emp_55555(dept IN varchar2, percent IN number) IS
+BEGIN
+    UPDATE employee_55555
+    SET salary= salary + ((salary/100)*percent)
+    where department = dept;
+END;
+/
+
+/*
+10000 = 10000 + (10000/100 * 5) = 10500
+*/
+BEGIN
+    sal_incr_emp_55555('IT',5);
+    sal_incr_emp_55555('sales',7);
+    sal_incr_emp_55555('MARKETING',10);  
+END;
+/
+
+select * from employee_55555;
+
+
+/* Statements and Loops */
+--For loop 
+
+DECLARE 
+    i number; 
+BEGIN
+    FOR i in 0..5 LOOP
+        dbms_output.put_line(i);
+    END LOOP;   
+END;
+/
+--REVERSE FOR
+DECLARE 
+    i number; 
+BEGIN
+    FOR i in REVERSE 0..5 LOOP
+        dbms_output.put_line(i);
+    END LOOP;   
+END;
+/
+--Nested FOR : Labelled
+DECLARE 
+    i number; 
+    j number; 
+BEGIN
+    <<outer_loop>>
+    FOR i in 0..2 LOOP
+        <<inner_loop>>
+        FOR j in 0..2 LOOP
+            dbms_output.put_line(i || '-' || j);
+        END LOOP inner_loop;
+    END LOOP outer_loop;   
+END;
+/
+--Basic Loop
+DECLARE
+    i number := 1;
+BEGIN
+    LOOP 
+        dbms_output.put_line(i);
+        i := i+1;
+        
+        if i>5 then --exit is needed with basic loop
+            exit;
+        end if;      
+    END LOOP;
+END;
+/
+
+-- While loop 
+DECLARE 
+    i number := 1; 
+BEGIN
+    while i<5 loop
+        dbms_output.put_line(i);
+        i := i+1;
+    end loop; 
+END;
+/
+
+-- EXIT WHEN statement
+DECLARE 
+    i number := 1; 
+BEGIN
+     loop 
+        dbms_output.put_line(i); 
+        i := i+1;
+        
+        EXIT WHEN i = 5;
+     END loop; 
+END;
+/
+
+/*
+    Exception Handling : check for any logical issues, If they exits, raise an exception
+    1. raise an exception: Do nothing (let exception go in the o/p)
+    2. raise an exception: handle it
+    
+    Types of Exceptions
+    i. Inbuilt Exception 
+    ii. Self defined exception
+*/
+
+/*
+    Create a proc to take percent as input and compute grade according to the following criteria:
+    percent > 75 : A
+    percent > 60 : B
+                 : C
+*/
+CREATE OR REPLACE PROCEDURE compute_grade_55555(percent IN number, grade OUT varchar2) IS
+BEGIN
+    IF percent < 0 THEN
+        RAISE INVALID_NUMBER;
+    END IF; 
+    
+    if percent > 100 THEN
+        RAISE VALUE_ERROR;
+    END IF; 
+    
+    IF percent > 75 THEN
+        grade := 'A';
+    ELSIF percent > 60 THEN
+        grade := 'B';
+    ELSE
+        grade := 'C';
+    END IF;
+    
+    EXCEPTION 
+        WHEN INVALID_NUMBER THEN
+            dbms_output.put_line('percent cannot be < 0');
+        WHEN VALUE_ERROR THEN
+            dbms_output.put_line('percent cannot be > 100');
+        WHEN OTHERS THEN
+            dbms_output.put_line('Error!! please check the inputs');
+END;
+/
+
+DECLARE
+    grade varchar2(10);
+BEGIN
+    compute_grade_55555(102,grade);
+    dbms_output.put_line(grade);
+END;
+/
+
+/*
+    Given the ID, return the name and department of the employee. 
+    If ID is invalid raise appropriate exception
+*/
+
+CREATE OR REPLACE PROCEDURE emp_details_55555(e_id IN number, e_name OUT varchar2, e_dept OUT varchar2) IS
+BEGIN
+    if e_id <= 0 THEN
+        RAISE INVALID_NUMBER;
+    END IF;
+    
+    select emp_name,department into e_name, e_dept
+    from employee_55555
+    where emp_id = e_id;
+    
+    EXCEPTION
+        WHEN INVALID_NUMBER THEN
+            dbms_output.put_line('ID must be greater than 0');
+        WHEN NO_DATA_FOUND THEN
+            dbms_output.put_line('Employee with ID ' || e_id || ' does not exist');
+        WHEN OTHERS THEN
+            dbms_output.put_line('ERROR!!!');
+END;
+/
+
+DECLARE
+    ename varchar2(50);
+    edept varchar2(50);
+BEGIN
+    emp_details_55555(14,ename,edept);
+    dbms_output.put_line(ename || '---' || edept );
+END;
+/
+/*
+    Given employee ID, return salary and name of the employee. 
+    1. ID < 0, ID CANNOT BE NEGATIVE
+    2. ID > 1000, we don't have more than 1000 employees
+*/
+
+
+CREATE OR REPLACE PROCEDURE emp_details_sal_55555(e_id IN number, e_name OUT varchar2, e_sal OUT number) IS
+
+MY_INVALID_ID_EXCEPTION EXCEPTION;
+MY_ID_OVERTHELIMIT_EXCEPTION EXCEPTION;
+BEGIN
+    if e_id <= 0 THEN
+        RAISE MY_INVALID_ID_EXCEPTION;
+    END IF;
+    
+    if e_id > 1000 THEN
+        RAISE MY_ID_OVERTHELIMIT_EXCEPTION;
+    END IF;
+    
+    select emp_name,salary into e_name, e_sal
+    from employee_55555
+    where emp_id = e_id;
+
+    EXCEPTION
+        WHEN MY_INVALID_ID_EXCEPTION THEN
+            dbms_output.put_line('ID must be greater than 0');
+        WHEN NO_DATA_FOUND THEN
+            dbms_output.put_line('Employee with ID ' || e_id || ' does not exist');
+        WHEN MY_ID_OVERTHELIMIT_EXCEPTION THEN 
+            dbms_output.put_line('we dont have more than 1000 employees');  
+END;
+/
+
+DECLARE
+    ename varchar2(50);
+    esal number;
+BEGIN
+    emp_details_sal_55555(10003,ename,esal);
+    dbms_output.put_line(ename || '---' || esal );
+END;
+/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,31 @@
+<h1>Welcome to Library management system</h1>
+<button (click)="gotoAddBook()">Add Book</button><br />
+<form #libraryForm="ngForm" (submit)="onLibrarySubmit(libraryForm)">
+
+    <label>Search: </label>&nbsp;
+    <input type="text" name="search" ngModel #search="ngModel">&nbsp;
+    <input type="submit" value="Search"><br /><br />
+
+</form>
+
+<div>
+    <table style="width:100%">
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Genre</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+        <tr *ngFor="let b of bookArr">
+          <td>{{b.id}}</td>
+          <td>{{b.name}}</td>
+          <td>{{b.genre}}</td>
+          <td>
+          <div *ngIf="b.status; else elseBlock">Yes</div>
+          <ng-template #elseBlock>No</ng-template>
+          </td>
+          <td><button>Request</button></td>
+        </tr>
+      </table>
+</div>

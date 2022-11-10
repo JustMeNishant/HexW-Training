@@ -1,0 +1,35 @@
+<!--
+<form #employeeForm="ngForm" (submit)="onEmployeeSubmit(employeeForm)">
+  <label>Name : </label>
+  <input type="text" name="name" ngModel #name="ngModel"><br /><br />
+  <label>City : </label>
+  <input type="text" name="city" ngModel #name="ngModel"><br /><br />
+  <label>Salary : </label>
+  <input type="text" name="salary" ngModel #salary="ngModel"><br /><br />
+  <input type="submit" value="Add Employee">
+</form>
+
+<hr>
+<div class="employee_body" *ngFor="let e of employeeArr">
+  {{e.id}}<br/>
+  {{e.name}}<br/>
+  {{e.city}}<br/>
+  {{e.salary}}<br/>
+  <button (click)="deleteEmployee(e.id)">Delete</button>
+</div>
+
+
+<div class="employee_body" *ngFor="let s of studentArr">
+  {{s.id}}<br/>
+  {{s.name}}<br/>
+  {{s.email}}<br/>
+  Address : {{s.address.hno}}, {{s.address.pincode}}, {{s.address.city}}<br />
+</div>
+<app-patient></app-patient>
+-->
+<ul>
+  <li><a  routerLink="/">Home</a></li>
+  <li><a routerLink="/patient-appointment">Patient Appointment</a></li>
+  <li><a routerLink="/all-appointments">All Appointments</a></li>
+</ul>
+<router-outlet></router-outlet>

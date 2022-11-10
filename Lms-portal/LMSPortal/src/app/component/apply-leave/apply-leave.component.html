@@ -1,0 +1,29 @@
+<div class="form">
+    <form #leaveForm="ngForm" (submit)="onLeaveSubmit(leaveForm)">
+
+        <h2>Leave Form</h2>
+        <label>Name: </label>
+        <input type="text" name="name" ngModel #name="ngModel"><br /><br />
+
+        <label>Start Date: </label>
+        <input type="date" name="startDate" ngModel #startDate="ngModel"><br /><br />
+
+        <label>End Date: </label>
+        <input type="date" name="endDate" ngModel #endDate="ngModel"><br /><br />
+
+        <label>Leave Type: </label>
+        <select  ngModel #leaveType="ngModel" name="leaveType">
+            <option value="earnedLeave">Earned Leave</option>
+            <option value="sickLeave">Sick Leave</option>
+            <option value="casualLeave">Casual Leave</option>
+        </select><br /><br />
+
+        <label>Leave Reason: </label>
+        <input type="text" name="leaveReason" ngModel #leaveReason="ngModel"><br /><br />
+
+        <input type="submit" value="Apply Leave">&nbsp;
+
+        <button (click)="onCancel()">Cancel</button>
+
+    </form>
+</div>

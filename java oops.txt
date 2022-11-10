@@ -1,0 +1,1798 @@
+Object Oriented Programming: Java
+=================================
+
+Classes and Packages
+	- Classification of Variables
+	- Working with methods
+Working with Object
+	- Heap & Stack
+Inheritance
+	- Signature
+	- Overriding
+	- Overloading
+	- Polymorphism
+Keywords
+	- final 
+	- abstract 
+	- static 	
+Interface
+Constructor
+Encapsulation
+Exception Handling
+Arrays
+String
+Collections Framework
+JDBC API  
+
+Add-On
+------
+Enums
+Inner Classes
+
+Classes and Packages
+--------------------
+1. Access specifiers of a class
+
+- public : can be accessed from within all packages
+- default : can be accessed only within same package
+
+2. Access specifiers of a method
+
+- public 
+- protected
+- default
+- private
+
+3. Structure of a class
+
+class is made of 2 entities:
+a. variables
+b. methods 
+
+Variables
+---------
+- classified into 2 types 
+a. instance variables
+b. local variables
+
+Instance v/s Local
+------------------
+1. 
+ public class A {
+	 int x;  //instance variable - inside class body
+	 
+	 public void display() {
+		int y; //local variable - inside method body
+	}
+}
+
+2. 
+If Programmer does not initialize instance variable, JVM will initialize it and give a default value. 
+However, if a programmer does not initialiaze local variable, JVM will also not initialize it. 
+But if that variable is used without initilializing, JVM will give ERROR/Compilation Failure(CF)
+
+ex.
+ public class A {
+	 int x;  //int x=0 
+	 float f;//float f=0.0
+	 
+	 public void display() {
+		int y; //y has no value
+		System.out.println(y); //CF
+	}
+} 
+
+3. Scope of Instance variables is in entire class whereas scope of local variables is in the method in which it is declared. 
+
+ex.
+ public class A {
+	 int x=5;  //instance 
+	 
+	public void display() {
+		 int y=6;
+		 System.out.println(x); //5
+	}
+	 
+	public void m1() {
+		System.out.println(x); //5
+		System.out.println(y); //ERROR/CF
+	}
+}
+
+4. Instance variables go in the heap where as local variables are saved on the stack. 
+
+5. when there is a name clash between local and instance variables, JVM prefers local variable. 
+
+ex. 
+ public class A {
+	 int x=5;  //instance
+	 
+	public void display() {
+		int x=10;  //local
+		System.out.println(x); //10
+		System.out.println(this.x);//5
+	}
+}
+
+Note: use 'this' to access instance variables. 
+
+Working with Objects: Heap and Stack
+====================================
+A a=new A(); 
+
+- Reference goes on the stack, and object goes on the heap.
+
+
+A a: Reference variable
+new A() : Object 
+ 
+
+Example: 
+--------
+App.java
+=========
+package com.main;
+
+import com.beans.Customer;
+import com.service.CustomerService;
+
+public class App {
+	public static void main(String[] args) {
+		Customer c1 = new Customer(); 
+		c1.setName("harry potter");
+		c1.setBalance(10000); 
+		
+		Customer c2 = new Customer();
+		c2.setName("ronald weasley");
+		c2.setBalance(8000);
+		
+		CustomerService service = new CustomerService();
+		service.deposit(c1, 5000);
+		
+		System.out.println(c1.getBalance()); //15000
+		
+		service.deposit(c2, 3000);
+		
+		System.out.println(c2.getBalance()); //11000
+	}
+}
+
+Customer.java
+=============
+package com.beans;
+
+public class Customer {
+	private String name; 
+	private double balance;
+	
+	public void setName(String name) {
+		this.name = name;	
+	}
+
+	public void setBalance(double balance) {
+		this.balance=balance;	
+	}
+
+	public double getBalance() {
+		return this.balance;
+	}
+	
+	
+}
+CustomerService.java
+====================
+package com.service;
+
+import com.beans.Customer;
+
+public class CustomerService {
+
+	public void deposit(Customer c, int amount) {
+		c.setBalance(c.getBalance() + amount); 	
+	}
+
+}
+
+Inheritance
+===========
+- Signature
+- Overriding 
+- Overloading
+- Polymorphism 
+
+Signature of a method is calculated using following parameters
+1. Name of the method
+2. Number of Arguments 
+3. Data type of Arguments
+4. Sequence of Data types 
+
+ex. 
+public void m1(int x){ }
+public void m1(int y){ }
+
+-> Signature is Same 
+
+ex. 
+m1(int x,int y)
+m1(int y,int x)
+
+-> Signature is Same 
+
+ex. 
+m1(int x,float y)
+m1(float x,int y)
+
+-> Signature is different 
+
+
+Overriding of method
+====================
+A method is considered to be Overrided if, 
+a. The signature of the method is same in the sub-class &
+b. Following 2 rules are followed
+	1. Return type of the method is same
+	2. The sub-class method should not have weaker access privilege 
+
+Note: If any of above 2 rules(1,2) are violated and if the signature is same, then its CF. 
+
+Overloading of Method
+=====================
+If the signature of the methods is different but names are same then it is overloaded method. 
+
+Note: In Overloading you do not worry about return type or access privilege. 
+
+ex 1. 
+public void m1(int x)
+public void m1(int y)
+: Overriding 
+
+method privilege: 
+- public 
+- protected
+- default
+- private
+
+ex 2.
+protected void m1(int x,int y)
+public void m1(int y,int x)
+: Overriding
+
+ex 3.
+protected void m1(int x,int y)
+void m1(int y,int x)
+: CF
+
+ex 4.
+void m1(int x,int y)
+int m1(int y,int x)
+: CF
+
+ex 5.
+void m1(int x,int y)
+int m1(int y,float x)
+: Overloding
+
+ex 6. 
+public void m1(float y)
+public String m1(int x)
+: overloading
+
+ex 7. 
+public void m1(int y)
+public String m1(int x)
+: cf
+
+
+example: 
+
+package com.main;
+
+public class App {
+	public static void main(String[] args) {
+		 B b=new B();
+		 b.m1();
+		 b.m1(3);
+	}
+}
+
+class A{ //super
+	 public void m1() {
+		System.out.println("m1 in A");
+	}
+}
+
+class B extends A{ //sub
+	protected void m1(int x) {
+		System.out.println("m1 with Args in B");
+		
+	}
+}
+
+Polymorphism
+============
+: Multiple forms of an Object 
+
+-> Syntax
+-> method called polymorphically
+
+Syntax:
+------
+public class App {
+	public static void main(String[] args) {
+		 A a=new A(); //pure object of A
+		 B b=new B(); //pure object of B
+		 
+		 /*
+		  * super-class ref = sub-class obj
+		  */
+		 
+		 A a1 = new B(); //polymorphism 
+		 
+		 B b1 = new A(); //CF -- must be super=sub not the other way round
+	}
+}
+
+class A{ //super
+	
+}
+class B extends A{ //sub
+	
+}
+
+method called from a polymorphic object
+---------------------------------------
+if a method is called from a polymorphic object, we follow a 2 step procedure
+
+Step 1
+------
+go to super class and check if the method is present
+
+if(persent)
+	go to step 2
+else
+	CF
+
+Step 2
+------
+come to sub-class and check if the method is overrided? 
+
+if(overrided)
+	call the overridded(sub-class) version
+else
+	call the super class version
+
+Example:
+public class App {
+	public static void main(String[] args) {
+		 A a=new A();
+		 a.display(); //display in A
+		 B b=new B();
+		 b.display(); //display in B
+		 
+		 A polyobj=new B(); //poly 
+		 polyobj.display(); //display in B
+		 
+		 polyobj.m1();//m1 in A
+		 
+		// polyobj.m2(); //CF : m2 not in A
+	}
+}
+
+class A{ //super
+	public void display() {
+		System.out.println("display in A");
+	}
+	
+	public void m1() {
+		System.out.println("m1 in A");
+	}
+}
+
+class B extends A{ //sub
+	public void display() {
+		System.out.println("display in B");
+	}
+	
+	public void m2() {
+		System.out.println("m2 in B");
+	}
+}
+
+Keywords
+========
+- final : class, method, variable 
+- static : method, variable
+- abstract : class, method
+
+final keyword
+-------------
+final class
+-----------
+If a class is marked as final,It cannot be extended. 
+
+ex.
+public class App {
+	public static void main(String[] args) {
+		A a=new A();
+		a.m1();
+	}
+}
+
+final class A{ //stand alone class 
+	public void m1() {
+		System.out.println("A");
+	}
+}
+
+class B extends A{ // CF. A is final cannot be extended
+	
+}
+
+final method
+------------
+if a method is marked as final, it cannot be overrided. 
+
+ex.
+public class App {
+	public static void main(String[] args) {
+		 B b=new B();
+		 b.m1();
+	}
+}
+
+class A{
+	public final void m1() {
+		System.out.println("m1 in A");
+	}
+	public void m2() {
+		System.out.println("m2 in A");
+	}
+}
+
+class B extends A{
+	/*
+	public void m1() { //CF. cannot override final method
+		System.out.println("m1 in B");
+	}
+	*/
+}
+
+
+final variable
+- If a variable is marked as final, it must be initialized by the programmer. 
+- final variables cannot be assigned a value.
+
+ex.
+class A{
+	int x; //0(JVM)
+	final int y; //CF. final variable must be initialized by the programmer
+	final int z=5; 
+	
+	void m1() {
+		z=5; //CF. The final field A.z cannot be assigned
+	}
+	
+	void m2(final int x,final int y) {
+		
+	}
+}
+
+abstract keyword
+================
+abstract method
+---------------
+- abstract method does not have a body and ends with a semi colon
+
+public abstract void m1();
+
+- abstract method can only be present in an abstract class
+
+ex. 
+abstract class A{
+	public abstract void m1();
+	
+	public void m2() {
+		System.out.println("m2 in A");
+	}
+}
+
+abstract class
+--------------
+- abstract class cannot be instantiated. cannot create an object of an abstract class.
+
+A a=new A(); //CF.  
+
+- If a class extends an abstract class, it has to compulsarily override all the abstract methods of the super class. 
+
+Note: if a sub-class does not wish to override any of the abstract methods of the super-class then it must mark itself as abstract. 
+
+ex. 
+public class App {
+	public static void main(String[] args) {
+		//A a=new A(); //CF> cannot create an object of an abstract class
+		A a=new B(); 
+		a.m1();
+		a.m2();
+	}
+} 
+
+abstract class A{
+	public abstract void m1();
+	
+	public void m2() {
+		System.out.println("m2 in A");
+	}
+}
+
+class B extends A{
+	// B must override m1() 
+	public void m1(){
+		System.out.println("m1 in B");
+	}
+}
+
+
+Case Study
+----------
+You want to implement following methods having geometry calculations. 
+
+- compute area of circle (pi * r ^2)
+- compute area of rectangle (length * breadth)
+- circumference of the circle (2 * pi * r)
+
+
+static keyword
+==============
+static method
+-------------
+- If a programmer marks the method as static, it cannot be overrided by the sub class. However, if the subclass marks its own method as static, it can create its own version of that method. 
+
+example:
+
+public class App {
+	public static void main(String[] args) {
+		 A a=new B();
+		 a.display();
+	}
+} 
+
+class A{ //super
+	public static void display() { //final & static
+		System.out.println("display in A");
+	}
+	
+	public void m1() {
+		System.out.println("m1");
+	}
+}
+
+class B extends A{ //sub-class
+	public static void display(){
+		System.out.println("display in B");
+	}
+}
+
+- static method can be called in 3 possible ways. 
+	- using an Object 
+	- using class-name (preferred way-static way)
+	- directly(not at all preferred)
+
+ex.
+---
+public class Person {
+	public static void personInfo() {
+		System.out.println("I am a person");
+	}
+	
+	public void m1() {
+		System.out.println("m1 in person");
+	}
+}
+
+
+package com.main;
+
+import com.service.Person;
+ 
+import static com.service.Person.personInfo;
+ public class App {
+	public static void main(String[] args) {
+		 /* calling a static method */
+		
+		//Option 1 : using object
+		Person person = new Person();
+		person.personInfo();
+		person.m1();
+		
+		//Option 2 : static way
+		Person.personInfo();
+		
+		//Option 3: directly
+		personInfo();
+	}
+} 
+ 
+static variable
+---------------
+- static variables are saved in static memory of the class
+
+ex.
+public class App {
+	public static void main(String[] args) {
+		A a1 = new A();
+		A a2 = new A();
+		
+		a1.setX(10);
+		a2.setX(12);
+		
+		System.out.println(a1.getX()); //10
+		System.out.println(a2.getX()); //12
+		
+		A.setY(15);
+		
+		System.out.println(A.getY()); //15
+		
+		System.out.println(a1.getY());//15
+		System.out.println(a2.getY());//15
+	}
+}
+
+class A {
+	private int x;
+	private static int y;
+
+	public int getX() {
+		return x;
+	}
+
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	public static int getY() {
+		return y;
+	}
+
+	public static void setY(int y) {
+		A.y = y;
+	}
+
+}
+
+Example 2: 
+
+
+import com.beans.Customer;
+
+public class App {
+	public static void main(String[] args) {
+		Customer c1=new Customer(); 
+		Customer c2=new Customer(); 
+		
+		c1.setName("harry potter");
+		c1.setBalance(10000);
+		
+		c2.setName("ronald weasley");
+		c2.setBalance(8000);
+		
+		Customer.setRateOfInterest(4.0);
+		
+		System.out.println(c1.getRateOfInterest());
+		System.out.println(c2.getRateOfInterest());
+		System.out.println(Customer.getRateOfInterest());
+	}
+}
+
+ 
+Customer.java
+-------------
+package com.beans;
+
+public class Customer { //C1 C2 C3
+	private String name;
+	private double balance;
+	private static double rateOfInterest;
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public double getBalance() {
+		return balance;
+	}
+	public void setBalance(double balance) {
+		this.balance = balance;
+	}
+	public static double getRateOfInterest() {
+		return rateOfInterest;
+	}
+	public static void setRateOfInterest(double rateOfInterest) {
+		Customer.rateOfInterest = rateOfInterest;
+	}  
+}
+
+Interface
+=========
+Rule 1:
+-------
+An interface in java, by default, is an abstract entity and hence can not instantiated. 
+
+public interface Inter { 
+//public interface abstract Inter{}
+
+}
+
+Inter i =new Inter(); //CF 
+
+Rule 2
+------
+A variable in interface, by default, is public static and final. 
+
+public interface Inter { 	
+int x;  //public static final int x; 
+//CF. x must be initialized
+	int y=6;
+}
+
+Rule 3
+------
+A method in interface, by default, is public and abstract. 
+
+public interface Inter { 
+	 void m1();   //public abstract void m1();
+	 public abstract void m2(); 
+}
+
+Rule 4
+------
+An Interface can extend other interface
+
+public interface Inter { 
+	  void m1(); 
+}
+
+interface Inter1 extends Inter{
+	//Inter 1 has m1() from Inter
+}
+
+Rule 5: 
+------
+A class implements and interface and must override all the methods of that interface 
+
+ex.
+public interface Inter { 
+	public abstract  void m1(); 
+}
+
+class A implements Inter{
+
+	@Override
+	public void m1() {
+		System.out.println("m1 in A");
+		
+	}
+	
+}
+
+Note: If a class does not wish to override any of the interface methods, then we must mark the class as abstract. 
+
+
+ex. 
+package com.main;
+
+public interface Inter { 
+	public abstract  void m1(); 
+	void m2(); 
+}
+
+abstract class A implements Inter{
+
+	@Override
+	public void m1() {
+		System.out.println("m1 in A");	
+	}
+}
+
+class B extends A{
+
+	@Override
+	public void m2() {
+		System.out.println("m2 in B");	
+	}
+}
+
+App.java
+--------
+package com.main;
+
+public class App {
+	public static void main(String[] args) {
+		 B b=new B();
+		 b.m1();
+		 b.m2();
+	}
+}
+
+Case Study
+==========
+Implement deposit and withdrawal operations for a bank for multiple customers.
+Also calculate interest payable to each customer. 
+
+refer. project code. 
+
+ 
+Constructors
+============
+Rule 1: the name of the constructor should be similar to that of the class and constructors must not have any return type. 
+
+public class Product {
+
+	public Product(){ } //constructor
+}
+
+Rule 2: 
+If a programmer does not create any constructor in the class, JVM will create a default(no-arg) constructor in that class. 
+
+programmer's version
+--------------------
+public class Product {
+
+}
+ 
+JVM's Version
+-------------
+public class Product {
+	public Product() { //default(no arg) constructor
+		
+	}
+}
+
+Rule 3:
+If a programmer creates a constructor, JVM will not create any thing. 
+
+programmers's Version
+---------------------
+public class Product {
+	public Product(int x) {  }
+}
+
+JVM's Version
+-------------
+public class Product {
+	public Product(int x) {  }
+}
+
+Note: JVM does not create any constructor once programmer creates one in the class. 
+
+Rule 4: 
+-------
+A constructor is called whenever an object is created. A class can have multiple constructors provided the signatures are different. 
+
+ex.
+---
+public class Product {
+	public Product() {
+		System.out.println("default");
+	}
+		
+	public Product(int x) {
+		System.out.println("int");
+	}
+	
+	public Product(double x) {
+		System.out.println("double");
+	}
+	
+	public Product(String str) {
+		System.out.println("string");
+	}
+	
+	public Product(String name, double balance) {
+		System.out.println("string + double");
+	}
+}
+
+This is constructor overloading
+
+App.java
+--------
+import com.beans.Product;
+
+public class AppMain {
+	public static void main(String[] args) {
+		Product p1 = new Product(); //default
+		Product p2 = new Product(""); //string
+		Product p3 = new Product("",3440.00); //string+double
+		Product p4 = new Product(33); //int
+		Product p5 = new Product(10.0); //double
+	}
+}
+
+Rule 5:
+-------
+A programmer can call one constructor from within another contructor of the same class using this() method. 
+
+example:
+--------
+package com.beans;
+
+public class Product {
+	public Product() {
+		this("");
+		System.out.println("default");
+	}
+		
+	public Product(int x) {
+		System.out.println("int");
+	}
+	
+	public Product(String str) {
+		this(4);
+		System.out.println("string");
+	}
+
+}
+
+App.java
+--------
+package com.main;
+
+import com.beans.Product;
+
+public class AppMain {
+	public static void main(String[] args) {
+		Product p1 = new Product(); 
+		 
+	}
+}
+output:
+-------
+int
+string
+default
+
+
+Rule 6
+-------
+If a class does not extend any constructor, JVM extends it with Object class. 
+Object class is present inside java.lang package which is by default imported in every java program. 
+
+programmer's version
+--------------------
+public class Product { }
+
+JVM's version
+-------------
+public class Product extends Object{ } 
+
+Rule 7
+------
+JVM always adds a super() statement inside every constructor of the class except those that do not have this() method. 
+
+super() calls the constructor of the super class. 
+
+ex.
+---
+import com.beans.Product;
+
+public class AppMain {
+	public static void main(String[] args) {
+		 B b=new B(); 
+	}
+}
+
+class A extends Object{
+	A(){
+		super(); //--written by JVM
+		System.out.println("A");
+	}
+}
+
+class B extends A{
+	B(){
+		super(); //--written by JVM
+		System.out.println("B");
+	}
+}
+
+ex. 
+---
+
+public class AppMain {
+	public static void main(String[] args) {
+		  B b=new B(3);
+	}
+}
+
+class A {
+	 A(int x){
+		 this("");
+		 System.out.println("int of A");
+	 }
+	 
+	 A(String str){
+		 super(); 
+		 System.out.println("string of A");
+	 }
+	 
+	 A(){
+		 this(4);
+		 System.out.println("default of A");
+	 }
+}
+
+class B extends A{
+	 B(int x){
+		 super();
+		 System.out.println("int of B");
+	 }
+}
+
+O/p:
+---
+string of A
+int of A
+default of A
+int of B
+
+ex:
+--
+class Animal{
+	Animal(String breed){
+		System.out.println("Animal breed");
+	}
+}
+
+class Dog extends Animal{
+	Dog(String breed){
+		System.out.println("Dog breed");
+	}
+}
+
+Dog dog =new Dog("mybreed"); 
+
+o/p:
+---
+CF
+
+Project Insight about constructors
+====================================
+constructors are used in bean classes to initialize instance variables. 
+
+ex.
+
+public class Book {
+	private String isbn;
+	private String title;
+	private double price;
+
+	public Book() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public Book(String isbn, String title, double price) {
+		super();
+		this.isbn = isbn;
+		this.title = title;
+		this.price = price;
+	}
+
+
+ex.
+public class Customer { // C1 C2 C3
+	private String name;
+	private double balance;
+	private static double rateOfInterest;
+
+
+	public Customer(String name, double balance) {
+		super();
+		this.name = name;
+		this.balance = balance;
+	}
+
+	
+	public Customer() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+Encapsulation 
+=============
+Encapsulation refers to hidding instance variables of a class from direct access by making them as private. 
+
+public class User {
+	private String name; 
+	private String username; 
+	private String password;
+}
+
+We provide constructors for initializing instance variables and creating objects. 
+
+public class User {
+	private String name; 
+	private String username; 
+	private String password;
+	public User() {
+		super();
+	}
+	public User(String name, String username, String password) {
+		super();
+		this.name = name;
+		this.username = username;
+		this.password = password;
+	}	
+}
+
+We provide public getters and setters for accessing instance variables. 
+
+public class User {
+	private String name;
+	private String username;
+	private String password;
+
+	public User() {
+		super();
+	}
+
+	public User(String name, String username, String password) {
+		super();
+		this.name = name;
+		this.username = username;
+		this.password = password;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+}
+
+We override toString() method of the Object class so than when the programmer tries to display the reference of the class, it gets info about instance variables on that object location rather than the location memory address. 
+
+
+	@Override
+	public String toString() {
+		return "User [name=" + name + ", username=" + username + ", password=" + password + "]";
+	}
+
+
+Exception Handling
+==================
+Exception class Hierrarchy
+--------------------------
+
+												Throwable
+		
+			Error													Exception
+				AssertionError							IOException					RuntimeException		
+				StackOverFlowError							-FileNotFoundException		- ArithmeticException
+																								- NullPointerException
+																								- ArrayIndexOutOfBoundsE
+																								- ClassCastException
+
+
+
+- If there is a logical problem in the code, then JVM will throw an exception in the output console. 
+
+A.java
+======
+package com.service;
+public class A {
+
+	public double computeDivision(int i, int j) {
+		return i/j;	
+	}
+}
+App.java
+========
+package com.main;
+
+import com.service.A;
+
+public class App {
+	public static void main(String[] args) {
+		A a=new A();
+		double ans = a.computeDivision(10,0);
+		System.out.println("Ans is " + ans);
+		System.out.println("thank you");
+	}
+}
+
+O/P:
+----
+Exception in thread "main" java.lang.ArithmeticException: / by zero
+	at com.service.A.computeDivision(A.java:6)
+	at com.main.App.main(App.java:8)
+
+
+Note: Once the exception was encountered in main method, JVM stops executing the proram itself altogather. 
+
+
+Handle the Exception
+====================
+App.java
+--------
+package com.main;
+
+import com.service.A;
+
+public class App {
+	public static void main(String[] args) {
+		A a=new A();
+		try {
+			double ans = a.computeDivision(10,0);
+			System.out.println("Ans is " + ans);
+		}
+		catch(ArithmeticException e) {
+			System.out.println("/ by zero");
+		}
+		
+		System.out.println("thank you");
+	}
+}
+
+A.java
+------
+package com.service;
+
+public class A {
+
+	public double computeDivision(int i, int j) {
+		return i/j;
+	
+	}
+
+}
+O/P:
+----
+/ by zero
+thank you
+
+
+Throwing an Exception Manually
+==============================
+Example: 
+
+A.java
+-------
+package com.service;
+
+public class A {
+
+	public double computeDivision(int i, int j) {
+		ArithmeticException e = new ArithmeticException();
+		if(j==0 )
+			throw e; 
+		return i/j;
+	}
+
+	public int computeLength(String name) throws NullPointerException,RuntimeException{
+		if(name == null)
+			throw new NullPointerException("name cannot be null"); 
+		if(name.equals(""))
+			throw new RuntimeException("Name cannot be blank");
+		return name.length();
+	}
+
+}
+
+App.java
+--------
+
+import com.service.A;
+
+public class App {
+	public static void main(String[] args) {
+		A a=new A();
+		String name=null;
+		try {
+			int length = a.computeLength(name);
+			System.out.println("length is " + length);
+		}
+		catch(NullPointerException e) {
+			System.out.println(e.getMessage());
+		}
+		catch(RuntimeException e) {
+			System.out.println(e.getMessage());
+		}
+		System.out.println("thank you!!");
+	}
+}
+
+Case Study
+----------
+Take 3 subject marks as input from the user.  
+Compute percent
+Compute grade 
+
+double percent = ((sub1+sub2+sub3) * 100) / 300 
+grade: 
+percent > 75: A
+percent > 60: B
+else		  : C
+
+Validations:
+------------
+sub1 or sub2 or sub3 is less than 0: IllegalArgumentException
+-- (msg) marks must be more than 0 
+
+sub1 or sub2 or sub3 is more than 100:
+RuntimeException
+-- (msg) marks must be less than 100 
+
+Checked v/s Unchecked
+=====================
+If a programmer throws an Unchecked exception, Handling(try-catch) and warning(throws) is optional. 
+where as
+If a programmer throws a Checked exception,
+Handling(try-catch) and warning(throws) is mandatory
+
+example: 
+public class App {
+	public static void main(String[] args) {
+		 B b=new B();
+		 b.m1(); //handling is optional
+		 try {   //handling is mandatory
+			 b.m2();
+		 }
+		 catch(Exception e) {
+			 System.out.println("exception");
+		 }
+	}
+}
+
+class B{
+	void m1() { //warning is optional
+		throw new RuntimeException(); //unchecked exception
+	}
+	
+	void m2() throws Exception { //warning is mandatory
+		throw new Exception();//checked exception
+	}
+}
+
+Working with Self-Defined Exceptions
+====================================
+In a bank app, you have to implement deposit and withdrawal operations. 
+
+Following rules of transaction must be respected while performing this operations: 
+
+-> If the amount for withdrawal is > 50000: show OverTheLimit message. 
+"Cannot withdraw more than 50000 at a time"
+
+-> If the amount > balance : show 
+InsufficientFunds Message. 
+"Amount must be less than balance: no overdraft allowed"
+
+Solution
+--------
+refer git
+
+Try-Catch-finally block 
+=======================
+try{ }
+catch(){ }
+finally{ }
+
+try{ }
+finally{ }
+
+catch(){ } block is optional. finally will always be executed irrespective of weather the catch block is called or not. 
+
+ex.
+
+import java.util.Scanner;
+
+public class App {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		 try {
+			 throw new RuntimeException();
+		 }
+		 catch(RuntimeException e) {
+			 System.out.println("catch");
+		 }
+		 finally { //to release the resource
+			 sc.close();
+			 System.out.println("finally");
+		 }
+	}
+}
+O/P:
+---
+catch
+finally
+
+
+Arrays
+======
+Types of Array Creation
+-----------------------
+ex. 
+public class App {
+	public static void main(String[] args) {
+		//Type 1 : Directly assigning the values
+		int[] x= {5,3,1,6,8,7};
+		System.out.println(x);  //memory location of array from stack
+		System.out.println(x[1]); //3
+		
+		//System.out.println(x[6]); //AIOOBE
+		x[0]=4;
+		System.out.println(x[0]);//4
+		
+		//Type 2: Create an array using the object 
+		int[] y=new int[4];
+		y[0] = 4;
+		y[1] = 3; 
+		System.out.println(y[1]); //3
+		System.out.println(y[2]); //0
+		
+		//Type 3: combination of above 2 types
+		int[] z = new int[]{5,3,1,6,8,7};
+		System.out.println(z[3]); //6
+	}
+}
+
+Array Operations
+================
+ex.
+
+
+import java.util.Arrays;
+
+public class App {
+	public static void main(String[] args) {
+		 Integer[] arr = new Integer[] {5,3,1,6,7,4,2};
+		 
+		 /* Compute the length of the array */
+		 System.out.println(arr.length);//7
+		 
+		 /* Iterate over the array  */
+		 for(int i=0;i<arr.length;i++) { //i=0,1,2,3,4,5,6
+			 System.out.print(arr[i] + " ");
+		 }
+		 System.out.println("\n");
+		 //for-each loop
+		 for(int temp :arr) { //
+			 System.out.print(temp + " ");
+		 }
+		 
+		 /* Sorting the array */
+		 Arrays.sort(arr);
+		 System.out.println("\n After sorting");
+		 for(int temp :arr) { //
+			 System.out.print(temp + " ");
+		 }
+		 System.out.println("\n");
+		 /* Searching the array: binary search */
+		 int index = Arrays.binarySearch(arr, 4);
+		 System.out.println(index); //3
+		 
+		 index = Arrays.binarySearch(arr, 10); //-insertion point - 1 = -8
+		 System.out.println(index); //-8
+	}
+}
+
+Strings
+========
+String can be created in 2 possible ways
+
+- Using String Literal
+- Using String Object
+
+*String Literals go in the Pool memory 
+*String Objects go in the heap memory
+
+Some key features about Pool Memory
+-----------------------------------
+- Pool does not take duplicates. 
+
+String comparision
+------------------
+- equals()
+- == operator
+
+equals() compares values 
+== operator compares locations 
+
+Strings are immutable. Once strings are created in the pool, they do not change on that location. hence they are immutable. 
+
+Example:
+package com.main;
+
+public class StringDemo {
+	public static void main(String[] args) {
+		String s1="harry"; //String Literal -- goes in the pool 
+		String s2 = new String("harry"); //String Object
+		
+		String s3="harry";
+		String s4=new String("harry");
+		
+		/* String comparisions - equals() , == operator*/
+		
+		System.out.println(s1.equals(s2)); //true
+		
+		String s5="Harry";
+		System.out.println(s1.equals(s5)); //false
+		System.out.println(s1.equalsIgnoreCase(s5)); //true
+		
+		System.out.println(s1 == s2); //10X == 100X : false
+		System.out.println(s1 == s3); //10X == 10X : true
+		
+		String s6 = s2; 
+		System.out.println(s6 == s2); //true
+		
+		String s7=null;
+		if( !(s7 == null) )
+			System.out.println(s7.equals(s1));
+		
+		s1="potter";
+		System.out.println(s1); //potter
+		System.out.println(s1 == s3); //20X == 10X : false
+		 
+		s2 = "potter";
+		System.out.println(s2); //potter
+		System.out.println(s6); //harry
+		System.out.println(s6 == s2); //false
+	}
+}
+
+String Operations & Methods
+===========================
+
+public class StringOps {
+	public static void main(String[] args) {
+		/* Conversion from String-double/long & vice-versa */
+		
+		String s1="5";
+		double d = Double.parseDouble(s1);
+		System.out.println(d);//5.0
+		
+		//Double to String
+		Double d1=10.5; 
+		String s2 = d1.toString();
+		System.out.println(s2);
+		
+		double d3=10.5;
+		String s3 = Double.toString(d3); 
+		System.out.println(s3);
+		
+		String str= "harry potter"; //10X
+		System.out.println("Length is: " + str.length()); //12
+		str = str.concat(" hogwards"); //harry potter hogwards : 100X
+		System.out.println(str); //harry potter hogwards
+		
+		String str1="                            jack sparrow                        ";
+		System.out.println(str1.length()); 
+		
+		//trim() gets rid of beginning and trailing whitespace
+		str1 = str1.trim();
+		System.out.println(str1);//jack sparrow
+		System.out.println(str1.length());//12
+		
+		//split
+		String info="harry potter hogwards";
+		String[] arr = info.split(" ");
+		System.out.println("fname: " + arr[0]);
+		System.out.println("lname: " + arr[1]);
+		System.out.println("schname: " + arr[2]);
+	}
+}
+/*
+
+int : Integer
+float: Float
+long : Long
+double : Double
+
+String
+primitives: wrapper class
+*/
+
+StringBuilder
+=============
+ex. 
+
+public class SBDemo {
+	public static void main(String[] args) {
+		StringBuilder sb1=new StringBuilder("harry"); //100X
+		//StringBuilder sb2 = "harry potter"; -- Cannot create literals for StringBuilder class
+		StringBuilder sb2=new StringBuilder("harry"); //200X
+		StringBuilder sb3=new StringBuilder("harry"); //200X
+		System.out.println(sb1.equals(sb2)); //false 100X.equals(200X)
+		System.out.println(sb1 == sb2); //false 100X == 200X 
+		
+		sb1.append(" potter"); //harry potter
+		System.out.println(sb1);//harry potter
+		
+		// name=john 
+		StringBuilder sb4=new StringBuilder("john");
+		System.out.println(sb4.reverse());
+		
+		//conversion: StringBuilder to String
+		System.out.println(sb3.toString().equals(sb2.toString())); //true
+		
+		//String to StringBuilder 
+		String name="john squire";
+		StringBuilder sbName = new StringBuilder(name.toUpperCase());
+		 
+		
+	}
+}
+
+Enumerated Type (Enum)
+======================
+- Enums are used to define limited set of values that can be attached to a variable
+
+ex.
+--
+ 
+public class EnumDemo {
+	public static void main(String[] args) {
+		College college = College.XYZ;
+		System.out.println(college); //XYZ
+		
+		/* Convert enum into String */
+		String str = college.toString();
+		str = str.toLowerCase();
+		System.out.println(str);
+		
+		/* Convert String to Enum */
+		College c = College.valueOf(str.toUpperCase());
+		System.out.println(c); 
+	}
+}
+
+
+
+Ex. Create an Enum College and add marks value to it. 
+
+solution: 
+
+public enum College {
+	ABC(85),PQR(80),XYZ(75);
+	
+	int marks; 
+	
+	College(int marks){
+		this.marks = marks;
+	}
+
+	public int getMarks() {
+		return marks;
+	}
+
+}
+
+
+public class EnumDemo {
+	public static void main(String[] args) {
+		 College col = College.PQR;
+		 System.out.println(col.getMarks());//80
+		 
+		 col = College.XYZ;
+		 System.out.println(col.getMarks());//75
+	}
+} 
+
+
+Inner Classes
+=============
+example:
+
+public class InnerDemo {
+	public static void main(String[] args) {
+		Customer c = new Customer(22343, "harry potter", 10000); 
+		//Customer.Address address = c.new Address("101/2","401092", "mumbai", "MS", "India");
+		Customer.Address address = new Customer.Address("101/2","401092", "mumbai", "MS", "India");
+		c.setAddress(address);
+		System.out.println(c);
+	}
+}
+
+
+class Customer{
+	private int accoutNumber; 
+	private String name; 
+	private double balance; 
+	private Address address; 
+	
+	static class Address{
+		private String addressLine;
+		private String pincode;
+		private String city; 
+		private String state; 
+		private String country;
+		
+		public Address(String addressLine, String pincode, String city, String state, String country) {
+			super();
+			this.addressLine = addressLine;
+			this.pincode = pincode;
+			this.city = city;
+			this.state = state;
+			this.country = country;
+		}
+
+		
+		@Override
+		public String toString() {
+			return "Address [addressLine=" + addressLine + ", pincode=" + pincode + ", city=" + city + ", state="
+					+ state + ", country=" + country + "]";
+		}
+		
+		
+	}
+
+	public Customer(int accoutNumber, String name, double balance) {
+		super();
+		this.accoutNumber = accoutNumber;
+		this.name = name;
+		this.balance = balance;
+	}
+
+
+	@Override
+	public String toString() {
+		return "Customer [accoutNumber=" + accoutNumber + ", name=" + name + ", balance=" + balance + ", address="
+				+ address + "]";
+	}
+
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

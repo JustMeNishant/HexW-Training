@@ -1,0 +1,95 @@
+Java Database Connectivity [JDBC]
+=================================
+
+- It is used to connect to DB from java program. 
+- java.sql package offers set of classes and interfaces that help programmers perform DB operations. 
+	=> Connection <I>
+	=> PreparedStatement <I>
+	=> ResultSet <I>
+	=> DriverManager <C>
+
+Steps in DB connection
+======================
+Step 1: 
+-------
+Load the DB Driver
+
+[let say we are working with MySql DB]: start the DB. 
+[we need to download jar file and add to the build path of the project to access the driver.]
+
+Note: Driver is a class. (com.mysql.cj.jdbc.Driver)
+
+//Step 1: Load the driver
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			System.out.println("driver loaded..");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+
+Step 2: 
+-------
+Establish the connection
+
+Requirements: 
+url of the DB: jdbc:mysql://localhost:3306/<dbname> 
+username of DB: root
+password: Password123
+
+//Step 2: Establish the connection
+try {
+con = DriverManager.getConnection(url,username,password);
+System.out.println("Connection Established");
+} catch (SQLException e) {
+	e.printStackTrace();
+}
+
+Note: 'con' holds the connection. 
+
+Step 3 
+------
+Perform Operation: Insert / update / delete
+
+=> Write the query 
+=> Submit query to PreparedStatement 
+=> pstmt.executeUpdate()
+
+Snip
+----
+String sql="insert into employee(name,salary,city) values (?,?,?)";
+
+PreparedStatement pstmt = con.prepareStatement(sql);
+
+pstmt.executeUpdate();
+
+Perform Operation: Select 
+
+=> Write the query
+=> Submit query to PreparedStatement
+=> pstmt.executeQuery()
+
+Note: select operation means fetching data from DB. 
+
+[User resultset interface to read this data]
+
+Snip
+---
+String sql="select * from employee";
+PreparedStatement pstmt = con.prepareStatement(sql);
+
+ResultSet rst = pstmt.executeQuery();
+
+while(rst.next()) { <= we stay in while as long as we have rows to read from the DB.  
+
+//read the columns one by one and save them in object and save object in list. 
+
+int id = rst.getInt("id"); 
+e.setId(id);
+list.add(e);
+}
+
+
+
+
+
+ 

@@ -1,0 +1,33 @@
+<div class="form">
+  <form #userForm="ngForm" (submit)="onFormSubmit(userForm)">
+    <h2>Patient Appointment</h2>
+    <label>Name: </label>
+    <input type="text" name="name" ngModel #name="ngModel" required
+    pattern="[a-zA-Z ]+">
+    <span *ngIf="name.invalid && name.touched">
+      <small> Name is invalid</small>
+    </span>
+
+    <br /><br />
+    <label>Contact: </label>
+    <input type="text" name="contact" ngModel #contact="ngModel" required
+    pattern="[0-9]+">
+
+    <span *ngIf="contact.invalid && contact.touched">
+      <small> contact is invalid</small>
+    </span>
+
+    <br /><br />
+    <label>Email: </label>
+    <input type="text" name="email" ngModel #email="ngModel" required
+    pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$">
+
+    <span *ngIf="email.invalid  && email.touched">
+      <small> email is invalid</small>
+    </span>
+
+    <br /><br />
+
+    <input type="submit" value="Book Appointment" [disabled]="!userForm.valid">
+  </form>
+</div>

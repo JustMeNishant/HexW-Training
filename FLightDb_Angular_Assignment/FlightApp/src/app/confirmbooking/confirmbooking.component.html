@@ -1,0 +1,21 @@
+<div class="form1">
+    <h3>Book A Flight</h3>
+    <label>AirLines :</label>{{flight.name}}<br />
+
+    <label class="from">From</label> &nbsp;
+    {{flight.source}}
+
+    <label class="to">To</label>&nbsp;
+    {{flight.destination}}<br />
+
+    <label>Fare/Adult :</label>{{flight.adultfare}}&nbsp;&nbsp;<label>Fare/Child :</label>{{flight.childfare}}<br />
+    <form #fareForm="ngForm" (change)="change(fareForm)">
+        <label>No.of.Adults :</label>
+        <input type="number" name="no_of_adult" ngModel #no_of_adult="ngModel"><br />
+        <label>No.of.Children :</label>
+        <input type="number" name="no_of_children" ngModel #no_of_children="ngModel"><br />
+        <label>Total Fare : {{sum}}</label>
+       <br/>
+        <button>Continue To Checkout</button>
+    </form> 
+</div>

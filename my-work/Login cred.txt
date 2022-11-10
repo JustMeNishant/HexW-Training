@@ -1,0 +1,55 @@
+KonaB-hexaware-at-991491925675
+
+
+clone link : git clone https://git-codecommit.us-east-2.amazonaws.com/v1/repos/PGET_Imtyas_Aug
+
+git status : to check branch
+
+git branch -b "name" : to create branch
+
+git add "folder" : paste in dir
+
+git commit -m "message"
+
+git push origin 2000080620-Bhargav-branch : at last to upload
+
+
+to checkin in existing branch
+git checkout <branch name>
+
+Y0t6yezqVDz5Q1niXvyWcuqcINcfgW0syzZHT/H1iGc=
+=========================================================================================================
+
+[10:51 AM] Imtiyaz Hirani (Guest)
+git clone https://git-codecommit.us-east-2.amazonaws.com/v1/repos/PGET_Imtyas_Aug
+
+
+cd PGET_Imtyas_Aug
+
+
+git status    :- You should be on master branch
+
+git checkout -b <empid-name-branch>       :- this is your own branch
+
+<copy your projects, docs in git directory>
+
+git add <project folder/doc name>
+
+git commit -m "spring assignment"
+
+git push origin <branch-name>
+
+Note: if it tells you "who are you", Just run config command that git will show you and give your email id
+ star 1
+
+[10:52 AM] Imtiyaz Hirani (Guest)
+Level 2:
+_-------
+If the trainer pushes something on the master branch, U can take a pull from that branch. 
+
+git pull origin master
+ star 1
+
+================================================================================================================
+
+https://us-east-2.console.aws.amazon.com/codesuite/codecommit/repositories/PGET_Imtyas_Aug/browse?region=us-east-2#

@@ -1,0 +1,343 @@
+Java Collections Framework / Generics and Collections
+=====================================================
+List<I>
+	- ArrayList
+	- LinkedList
+	- Vector
+
+Map	<I>
+	- HashMap
+	- Hashtable
+	- LinkedHashMap
+
+Tree<I>
+	- TreeSet
+	- HashSet 
+
+Comparator Interfaces. 
+
+ArrayList
+=========
+P1: 
+
+package com.main;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+
+public class App {
+	public static void main(String[] args) {
+		ArrayList<Double> list = new ArrayList<>();
+		list.add(20D);
+		list.add(15d);
+		list.add(12D); 
+		list.add(25.0);
+		
+		System.out.println(list);
+		System.out.println(list.size()); //4
+		
+		/* Iteration */
+		for(Double d : list) { //
+			System.out.print(d + "  ");
+		}
+		
+		/* Sorting: ASC */
+		Collections.sort(list);
+		System.out.println("\n*****After Sorting *********"); 
+		System.out.println(list); //[12.0, 15.0, 20.0, 25.0]
+		
+		Collections.reverse(list);
+		System.out.println(list); //[25.0, 20.0, 15.0, 12.0]
+		
+		/* binary search */
+		Collections.sort(list); ////[12.0, 15.0, 20.0, 25.0]
+		int index = Collections.binarySearch(list, 15.0); 
+		System.out.println(index); //1
+		
+		/* refer elements using index */
+		double e = list.get(1);
+		System.out.println(e);
+		
+		/* remove element from list*/
+		list.remove(20.0);
+		System.out.println(list); //[]
+		System.out.println(list.size()); //3
+		//removeAll() removes all elements from the list 
+		
+	}
+}
+
+Case Study:
+Filter the employees based on given criteria
+
+solution: 
+
+package com.main;
+import java.util.ArrayList;
+import com.beans.Employee;
+public class EmpApp {
+	public static void main(String[] args) {
+		Employee e1 = new Employee(1,"harry",85000,"london");
+		Employee e2 = new Employee(2,"ronald",75000,"surrey");
+		Employee e3 = new Employee(3,"hermione",90000,"london");
+		
+		ArrayList<Employee> list = new ArrayList<>();
+		list.add(e1);
+		list.add(e2);
+		list.add(e3);
+		
+		for(Employee e : list) { //e=e1, e=e2, e=e3
+			System.out.println(e);
+		}
+		
+		//filteration of list 
+		ArrayList<Employee> filteredlist = new ArrayList<>();
+		System.out.println("****Filtered List (salary>80000)**** ");
+		/* Filter the list that has salary > 80000 */
+		for(Employee e : list) { //e=e1, e=e2, e=e3
+			if( e.getSalary() > 80000) {
+				//list.remove(e); -- ConcurrentModificationException
+				filteredlist.add(e);
+			}
+		}
+		
+		for(Employee e : filteredlist) { //e=e1, e=e2, e=e3
+			System.out.println(e);
+		}
+		
+		filteredlist.clear();
+		System.out.println("****Filtered List (city=surrey)**** ");
+		for(Employee e : list) {
+			if(e.getCity().equalsIgnoreCase("surrey"))
+				filteredlist.add(e);
+		}
+		for(Employee e : filteredlist) { //e=e1, e=e2, e=e3
+			System.out.println(e);
+		}
+		
+	}
+}
+
+Case Study: 
+Sorting as per descending Order
+
+program: 
+
+package com.main;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
+import com.beans.Employee;
+import com.service.EmployeeService;
+
+ 
+public class EmpSortAPp {
+	public static void main(String[] args) {
+		EmployeeService service = new EmployeeService();
+		ArrayList<Employee> list = service.getEmployeeList();
+		
+		/* Sort the list as per salary ASC  */
+		SortAssistAsc sortAssistAsc = new SortAssistAsc();
+		Collections.sort(list,sortAssistAsc );
+		
+		System.out.println("********Sorting ASC**********");
+		for(Employee e : list) {
+			System.out.println(e);
+		}
+		
+		System.out.println("********Sorting Desc**********");
+		/* Sort the list as per salary DESC  */
+		SortAssistDesc sortAssistDesc = new SortAssistDesc();
+		Collections.sort(list,sortAssistDesc );
+		
+		for(Employee e : list) {
+			System.out.println(e);
+		}
+	}
+}
+//e1(80000) , e2(75000)   2 4 =>  
+class SortAssistAsc implements Comparator<Employee>{
+
+	@Override
+	public int compare(Employee e1, Employee e2) {
+		if(e1.getSalary() > e2.getSalary()) {
+			//swap 
+			return 1; 
+		}
+		if(e1.getSalary() == e2.getSalary()) {
+			//same : don't swap
+			return 0; 
+		}
+		if(e1.getSalary() < e2.getSalary()) {
+			//proper ASC order: dont swap
+			return -1; 
+		}
+		
+		return 0;
+	}
+	
+}
+//2 4 : 
+class SortAssistDesc implements Comparator<Employee>{
+
+	@Override
+	public int compare(Employee e1, Employee e2) {
+		if(e1.getSalary() > e2.getSalary()) {
+			//no-swap 
+			return -1; 
+		}
+		if(e1.getSalary() == e2.getSalary()) {
+			//same : don't swap
+			return 0; 
+		}
+		if(e1.getSalary() < e2.getSalary()) {
+			//swap
+			return 1; 
+		}
+		
+		return 0;
+	}
+	
+}
+
+List<I>
+	- ArrayList
+	- LinkedList
+	- Vector
+
+- ArrayList is the fastest implementation of List classes. 
+- LinkedList maintains insertion order of the elements but deletion and updation is really slow. 
+- ArrayList also maintains ordering and is fast as well. 
+- Vector is older implementation but is thread safe. 
+
+Weather ArrayList takes null and duplicates? 
+YES. all List classes inclusing ArrayList take null value and allow duplicates. 
+
+example: 
+/* 2 ways of creating an ArrayList */
+		ArrayList<Integer> list = new ArrayList<>();  //pure
+		
+		List<String> list1=new ArrayList<>(); //poly
+		
+		/* Raw and Generic*/
+		List<String> list2=new ArrayList<>(); //Generic implementation
+		
+		List  list3=new ArrayList(); //Raw type
+		list3.add(1);
+		list3.add("");
+		
+
+Map	<I>
+	- HashMap
+	- Hashtable
+	- LinkedHashMap
+
+
+HashMap
+=======
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+public class HashMapDemo {
+	public static void main(String[] args) {
+		Map<String,String> map = new HashMap<>();
+		//map takes <key,value>
+		
+		map.put("harry", "potter");
+		map.put("ronald", "weasley");
+		map.put("hermione", "granger");
+		
+		System.out.println(map);
+		
+		System.out.println("****ALL KEYS*******");
+		for(String key : map.keySet()) { //key =harry, key=ronald, key=hermione
+			System.out.print(key + " ");
+		}
+		
+		System.out.println("\n*****ALL VALUES*******");
+		for(String value : map.values()) { //value=potter, value=weasley, value=granger
+			System.out.print(value + " ");
+		}
+		
+		System.out.println("\n********LOGIN***********");
+		/* take username from the user and verify if its present in the map.  */
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter the Username");
+		String username = sc.next();
+		
+		if(!map.containsKey(username)) {
+			System.out.println("Invalid Username");
+			sc.close();
+			return; 
+		}
+		
+		System.out.println("Enter the password");
+		String password=sc.next();
+		
+		//given the key(username) fetch the value(password) and compare
+		String passMap = map.get(username);
+		
+		if(!password.equals(passMap)) {
+			System.out.println("Invalid password");
+			sc.close();
+			return;
+		}
+		
+		System.out.println("Login Success, Welcome " + username);
+		sc.close();
+	}
+}
+
+
+- HashMap is the fastest Map class. 
+- Hashtable is synchronized and thread safe. 
+- LinkedHashMap is a linked implementation of HashMap and hence it is slower for deletion and updation. 
+
+HashMap ignores duplicate keys.
+It can have duplicate value.
+ 
+Tree<I>
+	- TreeSet
+	- HashSet 
+
+TreeSet
+=======
+ex.
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+
+public class TreeSetDemo {
+	public static void main(String[] args) {
+		Set<Integer> set = new TreeSet<>(); 
+		set.add(4);
+		set.add(2);
+		set.add(3);
+		set.add(1);
+		//set.add(null); //NullPointerException will be thrown  
+		
+		List<Integer> list = new ArrayList<>();
+		list.add(4);
+		list.add(2);
+		list.add(3);
+		list.add(1);
+		list.add(null); //no issues
+		System.out.println(list);
+		
+		list.remove(null);
+		System.out.println(list);
+		
+		Set<Integer> set1 = new TreeSet<>(list); 
+		System.out.println(set1); //sorted list
+	}
+}
+
+
+
+

@@ -1,0 +1,49 @@
+<div class="form">
+    <form #searchFlight="ngForm" (submit)="searchSubmit(searchFlight)">
+      <label>Source: </label>
+      <input type="text" name="source" ngModel #source="ngModel">&nbsp;&nbsp;
+
+      <label>Destination : </label>
+      <input type="text" name="destination" ngModel #destination="ngModel">&nbsp;&nbsp;
+
+      <label>Departure Date : </label>
+      <input type="date" name="departureDate" ngModel #departureDate="ngModel">&nbsp;&nbsp;
+
+      <input type="submit" value="search">
+    </form>
+</div>
+
+<div class="title_box">
+    <label>AIRLINES</label>&nbsp;
+     &nbsp;&nbsp;&nbsp;&nbsp;
+
+    <label>DEPARTURE</label>&nbsp;
+     &nbsp;&nbsp;&nbsp;&nbsp;
+
+    <label>DURATION</label>&nbsp;
+     &nbsp;&nbsp;&nbsp;&nbsp;
+
+    <label>ARRIVAL</label>&nbsp;
+     &nbsp;&nbsp;&nbsp;&nbsp;
+
+    <label>FARE/PERSON</label>
+</div>
+
+<div >
+    <ul *ngFor="let f of flightArr">
+        <li class="flightlist">
+            {{f.name}}
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            {{f.source}}/{{f.depatureDate}}
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            {{f.duration}}
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            {{f.destination}}/{{f.arrivalDate}}
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            {{f.adultFare}}
+            &nbsp;&nbsp;&nbsp;
+            <button class= "button1" (click)="selectFlight(f.id)">Select</button>
+        </li>
+    </ul>
+</div>
+  

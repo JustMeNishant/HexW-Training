@@ -1,0 +1,15 @@
+<form #bookForm="ngForm" (submit)="onBookSubmit(bookForm)">
+
+    <label>Name: </label>
+    <input type="text" name="name" ngModel #name="ngModel"><br /><br />
+
+    <label>Genre: </label>
+    <input type="text" name="genre" ngModel #genre="ngModel"><br /><br />
+
+    <label>Price: </label>
+    <input type="text" name="price" ngModel #price="ngModel"><br /><br />
+
+    <input class="button1" type="submit" value="Add Book">
+
+</form><br />
+<button (click)="goHome()">Home</button>

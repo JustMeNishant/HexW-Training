@@ -1,0 +1,20 @@
+<div>
+    <table style="width:100%">
+        <tr>
+          <th>Name</th>
+          <th>startDate</th>
+          <th>endDate</th>
+          <th>leaveType</th>
+          <th>leaveStatus</th>
+          <th>Comments</th>
+        </tr>
+        <tr *ngFor="let l of leaveRequestArr">
+          <td>{{l.employee.name}}</td>
+          <td>{{l.employee.startDate}}</td>
+          <td>{{l.employee.endDate}}</td>
+          <td>{{l.employee.leaveType}}</td>
+          <td>{{l.employee.leaveStatus}}</td>
+          <td>{{l.comments}}</td>
+        </tr>
+      </table>
+</div>

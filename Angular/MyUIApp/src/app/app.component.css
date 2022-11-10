@@ -1,0 +1,9 @@
+
+.employee_box{
+  border: 1px solid;
+  font-size: larger;
+  padding: 15px;
+  width: 28%;
+  float: left;
+  margin: 10px;
+}

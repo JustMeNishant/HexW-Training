@@ -1,0 +1,335 @@
+Angular Notes
+
+Installing Angular
+------------------
+npm install -g @angular/cli
+
+Create a project using Angular CLI
+----------------------------------
+ng new <project-name>
+
+Staring the project
+-------------------
+npm start
+
+change the port number
+----------------------
+in package.json file, in script object, change start prop to ng serve --port 4201
+
+"scripts": {
+    "ng": "ng",
+    "start": "ng serve --port 4201",
+
+Disable strict check
+--------------------
+in tsconfig.json file, change strict prop value to false
+
+"strict": false,
+
+Project Flow
+============
+first index.html is rendered. 
+IN index.html file, <app-root> selector renders <app> component. 
+In app component, 
+app-component.ts file is connected to 
+app-component.html & app-component.css file. 
+
+Example 1: 
+----------
+Simple Calc Operations
+
+app.component.ts
+----------------
+export class AppComponent {
+  x:number=20;
+  y:number=10;
+  ans:number=0;
+
+  add(){
+    this.ans = this.x + this.y;
+  }
+
+  sub(){
+    this.ans = this.x - this.y;
+  }
+
+  mul(){
+    this.ans = this.x * this.y;
+  }
+
+  div(){
+    this.ans = this.x / this.y;
+  }
+}
+
+
+app.component.html
+------------------
+<div>
+x= {{x}}  <br />
+y= {{y}} <br />
+</div>
+<hr />
+<div>
+  <button (click)="add()">ADD</button>
+  <button (click)="sub()">SUB</button>
+  <button (click)="mul()">MUL</button>
+  <button (click)="div()">DIV</button>
+</div>
+
+<div>
+  Ans is: {{ans}}
+</div>
+
+Example 2: Create a toggle effect button to display contact details.
+
+[Angular Directive]: *ngIf
+
+app.component.ts
+----------------
+export class AppComponent {
+
+  status: boolean = false;
+
+  toggleContact(){
+    this.status = !this.status;
+  }
+}
+
+app.component.html
+------------------
+<button (click)="toggleContact()">Show/Hide contact</button>
+
+<div *ngIf="status">
+    101/3 Kingston Avenue, Isleworth - TW31SE.
+</div>
+
+Example 3: Iterate over an array using *ngFor directive. 
+
+app.component.ts
+----------------
+export class AppComponent {
+  cities:string[] = ['mumbai','chennai','pune'];
+  values:number[]=[1,4,6,2,7,9,3];
+
+sort(direction: string){
+    if(direction == 'asc'){
+      this.values = this.values.sort((a,b)=>a-b);
+    }
+    if(direction == 'desc'){
+      this.values = this.values.sort((a,b)=>b-a);
+    }
+  }
+}
+
+app.component.html
+------------------
+<div >
+  <h3>Cities</h3>
+    <ol>
+      <li *ngFor="let c of cities">
+        {{c}}
+      </li>
+    </ol>
+ </div>
+
+ <hr>
+ <div>
+  <h3>Values</h3>
+  <ul>
+    <li *ngFor="let v of values">
+        {{v}}
+    </li>
+  </ul>
+ </div>
+
+<hr>
+ <button (click)="sort('asc')">Sort-ASC</button>
+ <button (click)="sort('desc')">Sort-DESC</button>
+
+Logic
+-----
+a-b : a<b : -ve    1 2
+a-b : a>b : +ve : swap   2 1
+a-b : a=b : 0
+
+Ex. 4
+-----
+Create a class Employee having following properties. 
+id,name,city,salary 
+
+Create multiple Employee objects and add them in Employee array. Iterate over the array and render in HTML. 
+
+Angular Component Lifecycle Hooks
+=================================
+when the component is to be displayed on the screen following methods are called. 
+
+1. constructor 
+2. OnInit - ngOnInit
+3. other ng methods
+4. ngOnDestroy()
+
+employee.model.ts
+-----------------
+export class Employee{
+  id:number;
+  name:string;
+  city:string;
+  salary:number;
+}
+
+app.component.ts
+----------------
+export class AppComponent implements OnInit, OnDestroy{
+  e1:Employee;
+  e2:Employee;
+  e3:Employee;
+  employeeArr:Employee[]=[];
+
+  constructor(){ }
+
+  ngOnInit(): void {
+     this.e1={
+      id:1,
+      name: 'harry potter',
+      city: 'london',
+      salary: 85000
+    };
+    this.e2={
+      id:2,
+      name: 'ronald weasley',
+      city: 'surrey',
+      salary: 75000
+    };
+    this.e3={
+      id:3,
+      name: 'hermione granger',
+      city: 'london',
+      salary: 95000
+    };
+
+    this.employeeArr.push(this.e1);
+    this.employeeArr.push(this.e2);
+    this.employeeArr.push(this.e3);
+  }
+
+  ngOnDestroy(): void {
+     console.log('on destroy...');
+  }
+
+}
+
+app.component.html
+------------------
+<div class="employee_box"
+      *ngFor="let e of employeeArr">
+{{e.id}} <br>
+{{e.name}} <br>
+{{e.city}} <br>
+{{e.salary}} <br>
+</div>
+
+app.component.css
+-----------------
+.employee_box{
+  border: 1px solid;
+  font-size: larger;
+  padding: 15px;
+  width: 28%;
+  float: left;
+  margin: 10px;
+}
+
+Ex. Call Employee-GetAll API and display the content in app component. 
+
+HttpClientModule	<module>
+		- HttpClient <service>
+
+- import the module in app.module.ts in imports array
+- Inject the service in Employee Serivce class in constructor. 
+
+'http://localhost:8181/employee/all' from origin 'http://localhost:4201' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+
+Calling an API
+==============
+Step 1: Check API in Postman & activate @CrossOrigin in Backend. 
+
+Step 2: Create a Model class to handle API Response. 
+
+Step 3: Create a Service class to call the API. API Method must return Observable. 
+
+Step 4: Call this method of Service class from Component and subscribe to it. 
+
+Creating Angular Form
+=====================
+Step 1: Add FormsModule in app.module.ts in imports[]
+Step 2: Convert HTML form into an Angular Form
+#employeeForm="ngForm"
+
+Step 3: Convert <input> fields into angular 
+<input type="text" ngModel #name="ngModel">
+
+
+Case Study
+----------
+A Patient wants to book an appointment with the doctor at a hospital. 
+
+Hospital has many doctors. every doctor has appointment slots. 
+
+After the booking is confirmed, show the booking confirmation page. 
+
+Patient(id,name,contact) 
+doctor(id,name,speciality)
+1:M
+slots(id,time,doctor_id)
+
+booking(id,patient_id,doctor_id,slots_id,date)
+
+
+Patient Name:
+Patient Contact: 
+
+Doctor: -----drop down : GET API
+Slots: ----- drop down : GET API
+
+POST API : BOOKING 
+
+Implementing Routing in Angular
+===============================
+- Create all components
+ng g c components/nav-bar
+ng g c components/home
+ng g c components/patient-appointment
+ng g c components/all-appointments
+ng g c components/booking-confirmation
+
+- Configure routes array in app-routing.module.ts
+
+const routes: Routes = [
+  {path : '', component: HomeComponent},
+  {path: 'patient-appointment', component: PatientAppointmentComponent},
+  {path: 'all-appointments', component: AllAppointmentsComponent},
+  {path: 'booking-confirmation', component: BookingConfirmationComponent},
+  {path: '**', component: PageNotFoundComponent}
+];
+
+- Make a routing-outlet in app.component.html file. 
+<app-nav-bar></app-nav-bar>
+<router-outlet></router-outlet>
+
+- In Navbar component, create router links
+
+<ul>
+  <li><a  routerLink="/">Home</a></li>
+  <li><a routerLink="/patient-appointment">Patient Appointment</a></li>
+  <li><a routerLink="/all-appointments">All Appointments</a></li>
+</ul>
+
+Load component from ts file
+============================
+- Inject router service in component. 
+  constructor(private router: Router) { }
+- call navigateByUrl method 
+//load booking confirmation component
+this.router.navigateByUrl('/booking-confirmation');
+

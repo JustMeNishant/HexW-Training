@@ -1,0 +1,40 @@
+<div class="form">
+    <form #flightForm="ngForm" (submit)="onFlightSubmit(flightForm)">
+      <h2>Vendors Flight Form</h2>
+      <label>Name: </label>
+      <input type="text" name="name" ngModel #name="ngModel"><br /><br />
+
+      <label>Source: </label>
+      <input type="text" name="source" ngModel #source="ngModel"> &nbsp;
+
+      <label>Destination: </label>
+      <input type="text" name="destination" ngModel #destination="ngModel"><br /><br />
+
+      <label>Departure Date: </label>
+      <input type="date" name="depdate" ngModel #depate="ngModel"> &nbsp;
+
+      <label>Departure Time:</label>
+      <input type="time" name="deptime" ngModel #deptime="ngModel"><br /><br />
+
+      <label>Arrival Date: </label>
+      <input type="date" name="arrdate" ngModel #arrdate="ngModel">
+       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+      <label>Arrival Time:</label>
+      <input type="time" name="arrtime" ngModel #arrtime="ngModel"><br /><br />   
+
+      <label>Adult Fare:</label>
+      <input type="number" name="adultfare" ngModel #adultfare="ngModel"> &nbsp;
+
+      <label>Child Fare:</label>
+      <input type="number" name="childfare" ngModel #childfare="ngModel"><br /><br />
+
+      <label>Duration:</label>
+      <input type="number" name="duration" ngModel #duration="ngModel">&nbsp;&nbsp; 
+
+      <label>Seats:</label>
+      <input type="number" name="seats" ngModel #seats="ngModel"><br /><br />
+  
+      <input type="submit" value="Post Flight">
+    </form>
+  </div>

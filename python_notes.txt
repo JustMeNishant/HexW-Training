@@ -1,0 +1,754 @@
+Python Programming
+
+Data types + loops/statements + string + Math/Date 
+OOP in Python: classes, variable, methods 
+inheritance
+contructors
+exception handling 
+DB Connection
+
+#working with variables and exploring data types/structures in python 
+
+x=3
+print(x)
+print(type(x))
+# to run the cell: ctrl+enter
+
+name="harry potter"
+print(name)
+print(type(name))
+
+pi=3.14
+print(pi)
+print(type(pi))
+
+O/P:
+---
+3
+<class 'int'>
+harry potter
+<class 'str'>
+3.14
+<class 'float'>
+
+Tuple
+=====
+#Special DataTypes : Collections
+
+#tuple 
+#tuple allows duplicates
+#it allows access to individual items
+#it does not allow item assignment
+
+cities=('mumbai', 'chennai', 'kolkata')
+print(cities) #('mumbai', 'chennai', 'kolkata')
+
+print(cities[0]) #mumbai
+print(cities[2]) #kolkataa
+
+teams=('csk','mi','kkr','csk') #tuple accepts duplicates
+print(teams) #('csk', 'mi', 'kkr', 'csk')
+
+cities[0]='pune' #tuple' object does not support item assignment
+
+O/P:
+---
+('mumbai', 'chennai', 'kolkata')
+mumbai
+kolkata
+('csk', 'mi', 'kkr', 'csk')
+TypeError     
+                            
+List
+====
+#list 
+#allows duplicates
+#gives access to individual elements/items
+#allows assignments
+
+cities=['mumbai','pune','delhi']
+print(cities)
+
+print(cities[1]) #pune
+
+teams=['csk','mi','kkr','csk']
+print(teams) #['csk', 'mi', 'kkr', 'csk']
+
+cities[0]='chennai'
+print(cities) #['chennai', 'pune', 'delhi']
+
+O/P:
+----
+['mumbai', 'pune', 'delhi']
+pune
+['csk', 'mi', 'kkr', 'csk']
+['chennai', 'pune', 'delhi']
+
+Set
+====
+#set 
+#ignores duplicates
+#does not allow item assignment 
+#does not allow access to individual elements 
+
+cities={'mumbai','pune','delhi'}
+print(type(cities)) #<class 'set'>
+print(cities) #{'mumbai', 'pune', 'delhi'}
+print(len(cities)) #3
+
+print(cities[0]) #does not allow access to individual elements 
+
+teams={'csk','mi','csk'}
+print(teams) #{'mi', 'csk'} #set ignores duplicates
+
+teams[1]='kkr' #'set' object does not support item assignment
+
+O/P:
+<class 'set'>
+{'mumbai', 'pune', 'delhi'}
+3
+
+Dictionary
+==========
+#dictionary 
+#works as <key,value>
+
+employee={
+    'empId': 86868,
+    'ename': 'harry potter',
+    'ecity': 'london',
+    'projects': ['banking','ecom']
+}
+
+print(employee)
+print(employee['ename']) #harry potter
+print(len(employee['projects'])) #2
+
+#creating employee objects idividually and adding them in list
+
+e1={
+   'empId': 86868,
+    'ename': 'harry potter',
+    'ecity': 'london',
+    'projects': ['banking','ecom'] 
+}
+
+e2={
+    'empId': 88796,
+    'ename': 'ronald weasley',
+    'ecity': 'london',
+    'projects': ['insurance','ecom'] 
+}
+
+employee_list=[e1,e2]
+print(employee_list)
+
+#creating the list/tuple with multiple employee records
+
+employees=(
+    {
+    'empId': 86868,
+    'ename': 'harry potter',
+    'ecity': 'london',
+    'projects': ['banking','ecom'] 
+    },
+    {
+    'empId': 88796,
+    'ename': 'ronald weasley',
+    'ecity': 'london',
+    'projects': ['insurance','ecom'] 
+    }
+)
+
+print(employees)
+
+O/P
+
+{'empId': 86868, 'ename': 'harry potter', 'ecity': 'london', 'projects': ['banking', 'ecom']}
+harry potter
+2
+[{'empId': 86868, 'ename': 'harry potter', 'ecity': 'london', 'projects': ['banking', 'ecom']}, {'empId': 88796, 'ename': 'ronald weasley', 'ecity': 'london', 'projects': ['insurance', 'ecom']}]
+({'empId': 86868, 'ename': 'harry potter', 'ecity': 'london', 'projects': ['banking', 'ecom']}, {'empId': 88796, 'ename': 'ronald weasley', 'ecity': 'london', 'projects': ['insurance', 'ecom']})
+
+
+Conversion
+==========
+#Set -> List 
+
+cities={'mumbai','pune','delhi','mumbai'}
+print(cities) #{'mumbai', 'pune', 'delhi'}
+#cities[3]='indore'
+
+#convert set into list : list function
+city_list = list(cities)
+print(city_list)
+city_list[2]='indore'
+print(city_list)
+
+cityList=[]
+#conversion using loop : manual
+for i in cities:
+    cityList.append(i)
+
+print(cityList) #['mumbai', 'pune', 'delhi']
+cityList.append('indore')
+print(cityList) #['mumbai', 'pune', 'delhi', 'indore']
+
+# statements and loops 
+
+#for loop
+
+list=['harry','ronald','hermione']
+
+for e in list:
+    print(e)
+    
+print(len(list)) #3
+
+for i in range(0,len(list)): #i=0,1,2
+    print(list[i]) 
+
+for i in range(len(list)): #i=0,1,2
+    print(list[i])
+
+#while loop
+i=0
+while i<len(list): #i=0,1,2
+    print(list[i])
+    i=i+1 #i++ does not work
+
+
+#if statement : if else ladder 
+
+marks=80
+if marks>75:
+    print('grade A')
+elif marks>60:
+    print('grade B')
+else:
+    print('grade C')
+
+
+#bool function : boolean
+
+list=[]
+bool(list) # false
+
+list.append('mumbai')
+bool(list) #true
+
+marks=0
+bool(marks) #false
+
+marks=60
+bool(marks)#true
+
+name=''
+bool(name) #false
+
+name='harry'
+bool(name) #true
+
+
+#complex numbers
+
+c1=3+4j
+print('real part ', c1.real)
+print('imaginary part ', c1.imag)
+print('conjugate ', c1.conjugate())
+
+c2=2+3j
+print('Add ', c1+c2)
+print('Sub ', c1-c2)
+print('Mul ', c1*c2)
+print('Div ', c1/c2)
+
+working with String
+===================
+
+#String functions
+#len
+str="harry potter"
+print(len(str)) #12
+
+#strip
+str=" ronald "
+print(len(str)) #8
+str = str.strip()
+print(len(str)) #6
+
+#upper,lower
+str="harry potter"
+print(str.upper()) #HARRY POTTER
+print(str.lower()) #harry potter
+
+#replace
+str = str.replace('potter','hogwards')
+print(str) #harry hogwards
+
+#split
+str="harry potter hogwards"
+list = str.split(' ')
+print('fname ', list[0]) #harry
+print('lname ', list[1]) #potter
+print('schname ', list[2]) #hogwards
+
+#searching
+str="mumbai"
+
+print(str.find('u')) #1
+print(str.find('m')) #0
+print(str.find('h')) #-1
+
+#min max
+nums="12345"
+
+print(min(nums)) #1
+print(max(nums)) #5
+
+str="abcd"
+print(min(str)) #a
+print(max(str)) #d
+
+str ="abcdA"
+print(min(str)) #A
+
+#String slicing and dicing ops
+
+str="harry potter"
+#print first 4 chars 'harr'
+print(str[0:4]) #0 to 3, excludes 4  
+
+print(str[:]) #harry potter
+
+#print string from 3rd character up end. 'rry potter'
+print(str[2:]) #rry potter
+
+#print the first 2 characters 'ha'
+print(str[:2]) #ha
+
+#print the last 2 characters 'er'
+print(str[-2:]) #er
+
+
+#Taking input from the User 
+
+name=input('Enter the name')
+print(name)
+
+
+#Working with Math package
+
+import math
+
+ans = math.sqrt(9) # computes square root 
+print(ans) #3
+
+#floor & ceil
+
+print(math.floor(3.9)) #floor:3 ceil:4
+print(math.ceil(3.9)) 
+
+print(math.floor(7.5)) #7
+print(math.ceil(7.5)) #8
+
+print(math.pow(3,2)) #9
+
+#working with time package
+
+import time
+
+print(time.localtime())
+print(time.localtime().tm_year) #2022
+print(time.localtime().tm_mon) #9
+
+current_time = time.asctime(time.localtime())
+print(current_time)
+
+import calendar
+
+cal=calendar.month(2022,9)
+print(cal)
+
+
+OOP in Python
+=============
+class A:
+    x=5
+    
+    def m1(self):
+        print('hello python!!')
+
+    def m2(self):
+        print(self.x) #5
+    
+    def m3(self):
+        self.x = self.x+10
+        return self.x
+    
+a=A() #object 
+a.m1()
+a.m2()
+val = a.m3()
+print(val)
+
+O/P:
+hello python!!
+5
+15
+
+ex.
+
+#take marks as input from the User, and compute percent(total_marks=300)
+
+class A:
+    sub1=0
+    sub2=0
+    sub3=0
+    
+    def computePercent(self, s1, s2, s3):
+        m1 = int(s1)
+        m2 = int(s2)
+        m3 = int(s3)
+        total_marks = m1+m2+m3
+        percent = (total_marks / 300) * 100
+        return percent
+
+a=A()
+sub1=input('Enter marks of sub1: ')
+sub2=input('Enter marks of sub1: ')
+sub3=input('Enter marks of sub1: ')
+percent = a.computePercent(sub1,sub2,sub3)
+print('percent is ' , percent)
+
+
+Enter marks of sub1: 80
+Enter marks of sub1: 75
+Enter marks of sub1: 75
+percent is  76.66666666666667
+
+
+#read balance from the user and compute interest amount @ 4pa
+
+class Bank:
+    
+    def __init__(self,balance):
+        self.balance=balance 
+    
+    def computeInterest(self):
+        intAmount = self.balance * 0.04 
+        return intAmount
+        
+balance = input('Enter the balance ')
+balance=int(balance)
+b=Bank(balance)
+print(b.computeInterest())
+
+o/P:
+Enter the balance 50000
+2000.0
+
+
+Inheritance
+===========
+ex 1.
+
+class A:
+    
+    def m1(self):
+        print('m1 in A')
+    
+class B(A):  #B extends A
+    pass
+
+b=B()
+b.m1()
+
+ex 2.
+
+class A:
+    
+    def m1(self):
+        print('m1 in A')
+
+class B(A):
+    
+    def m1(self): #overriding m1 of A 
+        print('m1 in B')
+        
+b=B()
+b.m1() #m1 in B
+
+
+ex 3.
+
+class A:
+    
+    def display(self):
+        print('display of A')
+
+class B:
+    
+    def display(self):
+        print('display of B')
+        
+class C(B,A):
+    pass
+
+c=C()
+c.display() #display of B
+
+
+ex.
+
+#pass numbers as list to the program and compute AVG, MIN, MAX of the list. 
+
+class A:
+    def __init__(self,list):
+        self.list = list
+        
+    def avgList(self):
+        sum=0
+        for e in self.list:
+            sum = sum + e
+        
+        avg = sum / len(list)
+        return avg
+    
+    def minList(self):
+        return min(self.list)
+    
+    def maxList(self):
+        return max(self.list)
+        
+list=[4,3,7,8,1]
+a=A(list)
+print(a.avgList()) #4.6
+print(a.minList()) #1
+print(a.maxList()) #8
+
+
+Exception Handling
+==================
+
+#Exception handling 
+class A:
+    
+    def __init__(self,x,y):
+        self.x = x
+        self.y = y
+    
+    def computeDiv(self):
+        try:
+            ans = self.x / self.y
+            print(ans)
+        except ArithmeticError: 
+            print('division by zero not allowed')
+        
+    
+    def takeInput(self):
+        self.x = input('enter no 1')
+        self.x = int(self.x)
+        self.y = int(input('enter no 2'))
+    
+
+x = int(input('enter no 1: '))
+y = int(input('enter no 2: '))
+a=A(x,y)
+a.computeDiv()
+
+O/P:
+----
+enter no 1: 12
+enter no 2: 6
+2.0
+
+enter no 1: 10
+enter no 2: 0
+division by zero not allowed
+
+
+Self Defined Exceptions
+=======================
+Use Case:
+--------- 
+Take marks_secured and total_marks from the user as input. 
+compute percent. 
+compute grade based on following criteria:
+percent>75: A
+percent>60: B
+			: C
+
+validations:
+------------
+if marks_secured > total_marks 
+"Illegal Marks Secured Entered"
+
+if total_marks < 100 
+"Invalid Total Marks Entered"
+
+IllegalMarksError
+InvalidTotalMarksError
+
+Solution: 
+---------
+class IllegalMarksError(Exception):
+    pass
+
+class InvalidTotalMarksError(Exception):
+    pass 
+
+class ExceptionDemo:
+    
+    def __init__(self,marks,total):
+        self.marks_secured = marks
+        self.total_marks = total
+    
+    def computeGrade(self):
+        try:
+            if self.marks_secured > self.total_marks:
+                raise IllegalMarksError()
+            if self.total_marks < 100: 
+                raise InvalidTotalMarksError()
+            
+            percent = (self.marks_secured * 100) / self.total_marks
+            if percent > 75:
+                print('Grade A')
+            elif percent > 60:
+                print('Grade B')
+            else:
+                print('Grade C')
+        
+        except IllegalMarksError: 
+               print('Illegal Marks Secured Entered')
+        except InvalidTotalMarksError:
+                print('Invalid Total Marks Entered')
+        except Exception: 
+                print('Something went wrong')
+                
+                
+marks_secured = int(input('Enter marks secured: ')) 
+total_marks = int(input('Enter total marks: '))   
+e = ExceptionDemo(marks_secured,total_marks)
+e.computeGrade()
+
+
+O/P
+===
+Enter marks secured: 160
+Enter total marks: 200
+Grade A
+
+Enter marks secured: 120
+Enter total marks: 100
+Illegal Marks Secured Entered
+
+Enter marks secured: 85
+Enter total marks: 90
+Invalid Total Marks Entered
+
+DB Connection
+=============
+#DB Connection 
+
+#install mysql package from python libraries
+!pip install mysql_connector 
+
+host="localhost"
+user=root
+password=Password123 / ""
+database=mycompanydb_55555
+
+#import mysql connector 
+import mysql.connector 
+
+#establish the connection 
+mydb = mysql.connector.connect(host="localhost", user="root",password="Password123",database="mycompanydb_55555")
+print(mydb) #<mysql.connector.connection.MySQLConnection object at 0x00000275CD1C2790>
+
+Ex. 
+Program to fetch the data from the database
+
+#import mysql connector 
+import mysql.connector 
+
+#establish the connection 
+con = mysql.connector.connect(host="localhost", user="root",password="",database="mycompanydb_55555")
+ 
+#fetch records from the DB 
+
+#preparing the cursor to execute my query 
+my_cursor = con.cursor()
+
+#create query 
+sql="select * from employee"
+
+#pass it to cursor for execution
+my_cursor.execute(sql)
+
+#fetch results 
+data = my_cursor.fetchall()
+
+for row in data: 
+    print(row)
+
+con.commit()
+
+O/P:
+(2, 'ronald', 75000.0, 'surrey')
+(3, 'hermione', 90000.0, 'london')
+
+ex. 
+Program to insert the records in DB
+
+#import mysql connector 
+import mysql.connector 
+
+#establish the connection 
+con = mysql.connector.connect(host="localhost", user="root",password="",database="mycompanydb_55555")
+ 
+my_cursor = con.cursor() 
+
+sql="insert into employee(name,salary,city) values (%s,%s,%s)"
+
+name = input('Enter the name: ')
+salary = input('Enter the salary: ')
+city = input('Enter the city: ')
+
+values=(name,salary,city)
+
+my_cursor.execute(sql,values)
+
+con.commit()
+
+print(my_cursor.rowcount, ' row inserted')
+
+O/P:
+---
+Enter the name: draco
+Enter the salary: 82000
+Enter the city: london
+1  row inserted
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

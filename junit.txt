@@ -1,0 +1,65 @@
+JUNIT
+=====
+JUnit is a popular testing framework. Programmers write unit test on their codes before pusing it on git. 
+
+Type of Testing
+===============
+Junit ******
+Automated Testing : Selenium 
+Performance Test / Load Test : HP Load Runner / Loader.io 
+Integrated Testing 
+
+
+Process: A -> B : 3 sec : 
+
+validateA() : Pass
+validateB() : Pass	
+debitA()		
+
+
+Junit 4/5 
+	: Assert 
+		: (static)assertEquals() 
+
+Runner for Junit: Hamcrest 
+
+Annotations in JUnit: 
+
+@Test
+-----
+It is used to specify a test case. 
+
+@Before
+-------
+This gets executed before every test case
+
+@After
+------
+This gets executed after every test case
+
+@BeforeClass
+------------
+This gets executed before the class is processed.
+[This purely belongs to class so must be static]
+
+@AfterClass
+-----------
+This gets executed right after the methods are done. 
+[This purely belongs to class so must be static]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,19 @@
+<div class="req_body">
+    <h3>Update Leave Request</h3>
+    <form #updateLeaveForm="ngForm" >
+        <label>Employee id : {{employee.id}}</label><br />
+        <label>Employee Name : {{employee.name}}</label><br />
+        <label>Start Date : {{employee.startDate}}</label><br />
+        <label>End Date : {{employee.endDate}}</label><br />
+        <label>Leave Type: {{employee.leaveType}}</label><br />
+        <label>Leave Reason : {{employee.leaveReason}}</label><br />
+        <label>Leave Days : {{employee.leaveDays}}</label><br />
+        <label>Leave Balance Days : {{employee.leaveBalance}}</label><br /><br />
+        <label>Comments :</label>&nbsp;
+        <input type="text" name="comments" ngModel #comments="ngModel"><br /><br />
+        <button class="b1" (click)="approveLeave(updateLeaveForm)">Approve</button>&nbsp;&nbsp;
+        <button class="b2" (click)="declineLeave(updateLeaveForm)">Decline</button>&nbsp;&nbsp;
+        <button class="b3" (click)="Cancel()">Cancel</button>
+
+    </form>
+</div>
